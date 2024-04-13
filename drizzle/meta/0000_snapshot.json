@@ -1,5 +1,5 @@
 {
-  "id": "7aa91a2c-8539-4a3c-ab39-dd2e5d1af2e4",
+  "id": "f83ab968-39db-4034-9afe-f3152fe02448",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "5",
   "dialect": "pg",
@@ -10,14 +10,8 @@
       "columns": {
         "id": {
           "name": "id",
-          "type": "serial",
+          "type": "uuid",
           "primaryKey": true,
-          "notNull": true
-        },
-        "title": {
-          "name": "title",
-          "type": "text",
-          "primaryKey": false,
           "notNull": true
         },
         "updated_at": {
@@ -47,74 +41,11 @@
           "primaryKey": false,
           "notNull": true
         },
-        "prompt_id": {
-          "name": "prompt_id",
-          "type": "serial",
-          "primaryKey": false,
-          "notNull": true
-        },
         "user_id": {
           "name": "user_id",
-          "type": "serial",
-          "primaryKey": false,
-          "notNull": true
-        }
-      },
-      "indexes": {},
-      "foreignKeys": {},
-      "compositePrimaryKeys": {},
-      "uniqueConstraints": {
-        "libraries_likes_unique": {
-          "name": "libraries_likes_unique",
-          "nullsNotDistinct": false,
-          "columns": [
-            "likes"
-          ]
-        }
-      }
-    },
-    "prompt": {
-      "name": "prompt",
-      "schema": "",
-      "columns": {
-        "id": {
-          "name": "id",
-          "type": "serial",
-          "primaryKey": true,
-          "notNull": true
-        },
-        "visibility": {
-          "name": "visibility",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true,
-          "default": "'PUBLIC'"
-        },
-        "description": {
-          "name": "description",
           "type": "text",
           "primaryKey": false,
           "notNull": true
-        },
-        "is_intrumental": {
-          "name": "is_intrumental",
-          "type": "boolean",
-          "primaryKey": false,
-          "notNull": true,
-          "default": false
-        },
-        "custom_aramters": {
-          "name": "custom_aramters",
-          "type": "json",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "created_at": {
-          "name": "created_at",
-          "type": "timestamp",
-          "primaryKey": false,
-          "notNull": true,
-          "default": "now()"
         }
       },
       "indexes": {},
@@ -140,7 +71,7 @@
         },
         "user_id": {
           "name": "user_id",
-          "type": "integer",
+          "type": "text",
           "primaryKey": false,
           "notNull": false
         }
@@ -164,7 +95,7 @@
       "columns": {
         "id": {
           "name": "id",
-          "type": "bigint",
+          "type": "text",
           "primaryKey": true,
           "notNull": true
         },

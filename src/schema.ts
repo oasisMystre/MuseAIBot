@@ -3,11 +3,10 @@ import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 import {
   pgTable,
   text,
-  boolean,
-  json,
   timestamp,
   serial,
   integer,
+  uuid,
 } from "drizzle-orm/pg-core";
 
 import { tokenGenerator } from "./utils/secret";
@@ -52,43 +51,14 @@ export const getTokensByUserIdSchema = selectTokensSchema.pick({
   userId: true,
 });
 
-export const prompts = pgTable("prompt", {
-  id: serial("id").primaryKey(),
-  visibility: text("visibility", {
-    enum: ["PUBLIC", "PRIVATE"] as const,
-  })
-    .default("PUBLIC")
-    .notNull(),
-  description: text("description").notNull(),
-  isIntrumental: boolean("is_intrumental").default(false).notNull(),
-  customParameters: json("custom_aramters"),
-  createdAt: timestamp("created_at").defaultNow().notNull(),
-});
-
-export const promptRelations = relations(prompts, ({ many }) => ({
-  libraries: many(libraries),
-}));
-
-export const insertPromptsScheme = createInsertSchema(users);
-export const selectPromptschema = createSelectSchema(users);
-
 export const libraries = pgTable("libraries", {
-  id: serial("id").primaryKey(),
-  title: text("title").notNull(),
+  id: uuid("id").primaryKey(),
   updateAt: timestamp("updated_at").defaultNow(),
   createdAt: timestamp("created_at").defaultNow(),
   plays: integer("plays").default(0).notNull(),
-  likes: integer("likes").array().unique().notNull(),
-  promptId: serial("prompt_id").notNull(),
+  likes: integer("likes").array().notNull(),
   userId: text("user_id").notNull(),
 });
-
-export const librariesRelations = relations(libraries, ({ one }) => ({
-  prompt: one(prompts, {
-    fields: [libraries.promptId],
-    references: [prompts.id],
-  }),
-}));
 
 export const selectLibrariesSchema = createSelectSchema(libraries).pick({
   id: true,
@@ -108,10 +78,7 @@ export const getByUserIdLibrariesSchema = selectLibrariesSchema.pick({
 export default {
   users,
   tokens,
-  prompts,
   libraries,
   userRelations,
   tokenRelations,
-  promptRelations,
-  librariesRelations,
 } as const;

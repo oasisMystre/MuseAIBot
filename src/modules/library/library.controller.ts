@@ -16,9 +16,6 @@ export const getLibrariesOnlyByUser = function (
   return db.query.libraries.findMany({
     columns: { likes: false },
     where: eq(libraries.userId, values.userId),
-    with: {
-      prompt: true,
-    },
     extras: {
       likes: sql`cardinality(likes)`.as("likes"),
     },
@@ -34,9 +31,6 @@ export const getLibraryOnlyByUser = function (
       eq(libraries.id, values.id),
       eq(libraries.userId, values.userId)
     ),
-    with: {
-      prompt: true,
-    },
     extras: {
       likes: count(libraries.likes).as("likes"),
     },
@@ -46,7 +40,7 @@ export const getLibraryOnlyByUser = function (
 export const createLibrary = function (
   values: z.infer<typeof insertLibrariesSchema>
 ) {
-  return db.insert(libraries).values(values).returning();
+  return db.insert(libraries).values(values).returning().execute();
 };
 
 export const updateLibrary = function (

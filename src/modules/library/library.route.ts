@@ -1,29 +1,72 @@
 import type { z } from "zod";
 import type { FastifyInstance, FastifyRequest } from "fastify";
 
-import { getLibrariesSchema, insertLibrariesSchema } from "../../schema";
+import { sunoApi } from "../../lib";
+import {
+  getLibrariesSchema,
+  insertLibrariesSchema,
+} from "../../schema";
 import {
   createLibrary,
   deleteLibraryOnlyByUser,
   getLibrariesOnlyByUser,
   updateLibrary,
 } from "./library.controller";
+import { createDto } from "./dto/create.dto";
 
 const getLibrariesOnlyByUserRoute = async function (req: FastifyRequest) {
-  return getLibrariesOnlyByUser({
+  const suno = await sunoApi;
+  const libraries = await getLibrariesOnlyByUser({
     userId: req.user.id,
+  });
+
+  if (libraries.length === 0) return [];
+
+  const songIds = libraries.map(({ id }) => id);
+  const audioInfos = await suno.get(songIds);
+
+  return audioInfos.map((audioInfo) => {
+    const library = libraries.find((library) => library.id === audioInfo.id);
+    return { audioInfo, library };
   });
 };
 
 const createLibraryOnlyByUserRoute = async function (
-  req: FastifyRequest<{ Body: z.infer<typeof insertLibrariesSchema> }>
+  req: FastifyRequest<{ Body: z.infer<typeof createDto> }>
 ) {
   const body = req.body;
-  return insertLibrariesSchema
-    .parseAsync(body)
-    .then((values) =>
-      createLibrary(Object.assign(values, { userId: req.user.id }))
-    );
+  const data: any[] = [];
+
+  await createDto.parseAsync(body).then(async (values) => {
+    const { isCustom, isInstrumental, title, prompt, tags, waitAudio } = values;
+    const suno = await sunoApi;
+    const audioInfos = await (isCustom
+      ? suno.custom_generate(
+          prompt,
+          tags!.join(","),
+          title!,
+          isInstrumental,
+          waitAudio!
+        )
+      : suno.generate(prompt, isInstrumental, waitAudio!));
+
+    for (const audioInfo of audioInfos) {
+      const libraries = await createLibrary({
+        id: audioInfo.id,
+        likes: [],
+        userId: req.user.id,
+      });
+
+      data.push(
+        ...libraries.map((library) => ({
+          library,
+          audioInfo,
+        }))
+      );
+    }
+  });
+
+  return data;
 };
 
 const updateLibraryOnlyByUserRoute = async function (
@@ -36,6 +79,7 @@ const updateLibraryOnlyByUserRoute = async function (
   const body = req.body;
 
   return insertLibrariesSchema
+    .omit({ id: true, userId: true, updateAt: true, createdAt: true })
     .partial()
     .parseAsync(body)
     .then((values) =>
