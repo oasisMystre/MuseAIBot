@@ -13,7 +13,7 @@ export default function LayoutHeader({ className }: React.PropsWithClassName) {
       <div className="">Header</div>
       <div
         className={clsx(
-          "flex-1 lt-md:fixed lt-md:inset-0 lt-md:flex-col lt-md:bg-black/50",
+          "flex-1 lt-md:fixed lt-md:inset-0 lt-md:flex-col lt-md:bg-black/50 lt-md:z-100",
           menuOpen ? "flex" : "lt-md:hidden"
         )}
       >

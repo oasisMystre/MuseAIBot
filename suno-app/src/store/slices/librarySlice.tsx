@@ -4,12 +4,14 @@ import {
   createSlice,
 } from "@reduxjs/toolkit";
 
-import type { LoadingState } from "../types";
+import { Api } from "../../lib/api";
 import type { Library } from "../../lib/api/models";
+
+import type { LoadingState } from "../types";
 
 export const getUserLibraries = createAsyncThunk(
   "libraries/getUserLibraries",
-  () => []
+  (api: Api) => api.library.getLibraries()
 );
 const libraryAdapter = createEntityAdapter<Library>();
 
@@ -27,9 +29,9 @@ export const librarySlice = createSlice({
       .addCase(getUserLibraries.rejected, (state) => {
         state.loadingState = "failed";
       })
-      .addCase(getUserLibraries.fulfilled, (state, { payload }) => {
+      .addCase(getUserLibraries.fulfilled, (state, { payload: { data } }) => {
         state.loadingState = "success";
-        libraryAdapter.setAll(state, payload);
+        libraryAdapter.setAll(state, data);
       });
   },
 });

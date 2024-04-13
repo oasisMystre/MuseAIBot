@@ -4,7 +4,7 @@ import CheckBox from "../../components/elements/CheckBox";
 export default function CreatePage() {
   return (
     <main className="flex-1 flex flex-col">
-      <main className="self-center min-w-xl flex flex-col space-y-8 p-4">
+      <main className="flex flex-col space-y-8 p-4 md:self-center md:min-w-xl">
         <header>
           <h1 className="text-xl font-bold">Create</h1>
         </header>

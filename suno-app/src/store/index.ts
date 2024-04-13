@@ -2,8 +2,12 @@ import { configureStore } from "@reduxjs/toolkit";
 import { useDispatch, useSelector } from "react-redux";
 import type { TypedUseSelectorHook } from "react-redux";
 
+import { libraryReducer } from "./slices/librarySlice";
+
 export const store = configureStore({
-  reducer: {},
+  reducer: {
+    library: libraryReducer,
+  },
 });
 
 export type AppDispatch = typeof store.dispatch;
