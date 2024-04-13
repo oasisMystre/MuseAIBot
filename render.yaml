@@ -1,0 +1,16 @@
+services:
+   - type: web
+     name: museaibot
+     runtime: node
+     plan: free
+     autoDeploy: true
+     startCommand:  bun start
+     envVars:
+       - fromGroup: museaibot
+     domains:
+       - "api.museaibot.com"
+databases:
+  - name: museai 
+    databaseName: museai
+    user: admin
+    plan: free 

@@ -3,7 +3,6 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { MdClose, MdMenu } from "react-icons/md";
 
-import type { React } from "../html";
 import { layoutNavigations } from "../config/navigations";
 
 export default function LayoutHeader({ className }: React.PropsWithClassName) {
@@ -49,7 +48,7 @@ export default function LayoutHeader({ className }: React.PropsWithClassName) {
       </div>
       <div className="flex lt-md:flex-1">
         <button
-          className="ml-auto border border-stone-900 bg-stone-950 p-2 rounded-md"
+          className="ml-auto border border-stone-900 bg-stone-950 p-2 rounded-md md:hidden"
           onClick={() => setMenuOpen(true)}
         >
           <MdMenu className="text-xl" />

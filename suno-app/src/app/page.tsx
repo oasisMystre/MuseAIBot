@@ -14,7 +14,7 @@ export default function HomePage() {
           />
         </div>
       </div>
-      <div className="grid grid-cols-3 gap-2 lg:grid-cols-4 overflow-y-scroll">
+      <div className="flex-1 grid grid-cols-3 gap-2 overflow-y-scroll md:grid-cols-5 xl:grid-cols-7">
         <MusicListShim />
       </div>
     </main>

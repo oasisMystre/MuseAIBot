@@ -3,15 +3,15 @@ import "@unocss/reset/tailwind.css";
 
 import React from "react";
 import { createRoot } from "react-dom/client";
-
-import "./index.css";
-import App from "./App";
 import { RouterProvider } from "react-router";
 import { createBrowserRouter } from "react-router-dom";
-import CreatePage from "./app/create/page";
-import LibraryPage from "./app/library/page";
+
+import "./index.css";
+
 import HomePage from "./app/page";
 import Layout from "./components/Layout";
+import CreatePage from "./app/create/page";
+import LibraryPage from "./app/library/page";
 
 const container = document.getElementById("root");
 const root = createRoot(container!);
