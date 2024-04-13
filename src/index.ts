@@ -3,9 +3,11 @@ import fastify from "fastify";
 import cors from "@fastify/cors";
 import { session, Telegraf } from "telegraf";
 
+import registerBot from "./bot";
 import { registerRoutes } from "./modules";
 import type { TelegramContext } from "./context";
-import registerBot from "./bot";
+
+import { getOrCreateUser } from "./modules/user/user.controller";
 import { tokenAuthMiddleware } from "./middlewares/auth.middleware";
 
 type MainParams = {
@@ -31,26 +33,30 @@ export async function main({ host, port, accessToken }: MainParams) {
 
   bot.use(session());
 
-  // bot.use(async (ctx, next) => {
-  //   const from = ctx.message!.from;
+  bot.use(async (ctx, next) => {
+    const from = ctx.message!.from;
+    const [user] = await getOrCreateUser({
+      id: from.id,
+      username: from.username,
+      firstName: from.first_name,
+      lastName: from.last_name,
+    });
+    ctx.setUser(user);
 
-  //   // ctx.setUser(
-  //   //   await getOrCreateUser(db, {
-  //   //     id: from.id,
-  //   //     username: from.username,
-  //   //     firstName: from.first_name,
-  //   //     lastName: from.last_name,
-  //   //   })
-  //   // );
+    return next();
+  });
 
-  //   return next();
-  // });
+  const longRunProcess: Promise<any>[] = [];
 
-  // const webhook = await bot.createWebhook({
-  //   domain: process.env.RENDER_EXTERNAL_HOSTNAME!,
-  // });
+  if ("RENDER_EXTERNAL_HOSTNAME" in process.env) {
+    const webhook = await bot.createWebhook({
+      domain: process.env.RENDER_EXTERNAL_HOSTNAME!,
+    });
 
-  // app.post(`/telegraf/${bot.secretPathComponent()}`, webhook as any);
+    app.post(`/telegraf/${bot.secretPathComponent()}`, webhook as any);
+  } else {
+    longRunProcess.push(bot.launch().then(() => console.log("Bot running...")));
+  }
 
   registerBot(bot);
   registerRoutes(app);
@@ -58,12 +64,13 @@ export async function main({ host, port, accessToken }: MainParams) {
   process.once("SIGINT", () => bot.stop("SIGINT"));
   process.once("SIGTERM", () => bot.stop("SIGTERM"));
 
-  await Promise.all([
-    // bot.launch().then(() => console.log("Bot running...")),
+  longRunProcess.push(
     app
       .listen({ port, host })
-      .then(() => console.log(`app listening at port ${port}`)),
-  ]);
+      .then(() => console.log(`app listening at port ${port}`))
+  );
+
+  await Promise.all(longRunProcess);
 }
 
 main({
