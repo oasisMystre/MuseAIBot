@@ -2,8 +2,9 @@ services:
    - type: web
      name: museaibot
      runtime: node
-     plan: free
+     plan: starter
      autoDeploy: true
+     buildCommand: bun install
      startCommand:  bun start
      envVars:
        - fromGroup: museaibot
