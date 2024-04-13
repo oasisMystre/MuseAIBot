@@ -36,7 +36,7 @@ export async function main({ host, port, accessToken }: MainParams) {
   bot.use(async (ctx, next) => {
     const from = ctx.message!.from;
     const [user] = await getOrCreateUser({
-      id: from.id,
+      id: from.id.toString(),
       username: from.username,
       firstName: from.first_name,
       lastName: from.last_name,

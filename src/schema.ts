@@ -8,13 +8,12 @@ import {
   timestamp,
   serial,
   integer,
-  bigint,
 } from "drizzle-orm/pg-core";
 
 import { tokenGenerator } from "./utils/secret";
 
 export const users = pgTable("users", {
-  id: bigint("id", { mode: "number" }).primaryKey(),
+  id: text("id").primaryKey(),
   username: text("username").unique(),
   firstName: text("first_name").notNull(),
   lastName: text("last_name"),
@@ -34,7 +33,7 @@ export const tokens = pgTable("tokens", {
   key: text("token")
     .$defaultFn(() => tokenGenerator.generate())
     .notNull(),
-  userId: integer("user_id").unique(),
+  userId: text("user_id").unique(),
 });
 
 export const tokenRelations = relations(tokens, ({ one }) => ({
@@ -81,7 +80,7 @@ export const libraries = pgTable("libraries", {
   plays: integer("plays").default(0).notNull(),
   likes: integer("likes").array().unique().notNull(),
   promptId: serial("prompt_id").notNull(),
-  userId: serial("user_id").notNull(),
+  userId: text("user_id").notNull(),
 });
 
 export const librariesRelations = relations(libraries, ({ one }) => ({
@@ -96,9 +95,7 @@ export const selectLibrariesSchema = createSelectSchema(libraries).pick({
   userId: true,
 });
 
-export const insertLibrariesSchema = createInsertSchema(libraries).omit({
-  userId: true,
-});
+export const insertLibrariesSchema = createInsertSchema(libraries);
 
 export const getLibrariesSchema = selectLibrariesSchema.pick({
   id: true,
