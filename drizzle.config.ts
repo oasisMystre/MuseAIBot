@@ -8,4 +8,5 @@ export default {
   out: "./drizzle",
   driver: "pg",
   dbCredentials: dbConfig,
+  
 } satisfies Config;
