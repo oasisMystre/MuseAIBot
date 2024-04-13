@@ -10,3 +10,4 @@ declare module "fastify" {
     authenticate: any;
   }
 }
+
