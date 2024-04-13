@@ -8,12 +8,13 @@ import {
   timestamp,
   serial,
   integer,
+  bigint,
 } from "drizzle-orm/pg-core";
 
 import { tokenGenerator } from "./utils/secret";
 
 export const users = pgTable("users", {
-  id: integer("id").primaryKey(),
+  id: bigint("id", { mode: "number" }).primaryKey(),
   username: text("username").unique(),
   firstName: text("first_name").notNull(),
   lastName: text("last_name"),

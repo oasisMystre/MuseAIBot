@@ -27,7 +27,7 @@ CREATE TABLE IF NOT EXISTS "tokens" (
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "users" (
-	"id" integer PRIMARY KEY NOT NULL,
+	"id" bigint PRIMARY KEY NOT NULL,
 	"username" text,
 	"first_name" text NOT NULL,
 	"last_name" text,

@@ -41,7 +41,7 @@ export async function main({ host, port, accessToken }: MainParams) {
       firstName: from.first_name,
       lastName: from.last_name,
     });
-    ctx.setUser(user);
+    ctx.user = user;
 
     return next();
   });
