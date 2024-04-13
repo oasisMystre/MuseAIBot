@@ -22,6 +22,8 @@ export default function AuthProvider({ children }: React.PropsWithChildren) {
   const [loadingState, setLoadingState] =
     useState<LoadingState["loadingState"]>("idle");
   const user = arrayToRecord<User>(Array.from(searchParams.entries()));
+  user.id = Number(user.id);
+
   useEffect(() => {
     setLoadingState("pending");
 
