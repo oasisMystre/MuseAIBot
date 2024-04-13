@@ -5,7 +5,7 @@ services:
      plan: starter
      autoDeploy: true
      buildCommand: pnpm build
-     startCommand:  pnpm start
+     startCommand:  pnpm serve
      envVars:
        - fromGroup: museaibot
      domains:
