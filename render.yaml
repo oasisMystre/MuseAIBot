@@ -4,7 +4,7 @@ services:
      runtime: node
      plan: starter
      autoDeploy: true
-     buildCommand: pnpm build
+     buildCommand: bun install && pnpm build
      startCommand:  pnpm serve
      envVars:
        - fromGroup: museaibot
