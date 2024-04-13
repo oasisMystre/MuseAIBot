@@ -13,6 +13,7 @@ async function upsertUserRoute(
   req: FastifyRequest<{ Body: z.infer<typeof insertUsersSchema> }>
 ) {
   const body = req.body;
+  body.id = body.id.toString();
 
   const values = await insertUsersSchema.parseAsync(body);
   const [user] = await getOrCreateUser(values);
