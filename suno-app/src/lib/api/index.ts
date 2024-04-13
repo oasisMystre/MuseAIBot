@@ -10,7 +10,7 @@ export class Api {
 
   constructor(accessToken?: string) {
     this.xior = xior.create({
-      baseURL: import.meta.env.API_BASE_URL,
+      baseURL: import.meta.env.VITE_APP_API_BASE_URL!,
       headers: {
         Authorization: accessToken ? "Bearer " + accessToken : undefined,
       },

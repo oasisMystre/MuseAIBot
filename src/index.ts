@@ -1,5 +1,6 @@
 import "dotenv/config";
 import fastify from "fastify";
+import cors from "@fastify/cors";
 import { session, Telegraf } from "telegraf";
 
 import { registerRoutes } from "./modules";
@@ -18,6 +19,10 @@ export async function main({ host, port, accessToken }: MainParams) {
     logger: true,
     ignoreTrailingSlash: true,
     ignoreDuplicateSlashes: true,
+  });
+
+  app.register(cors, {
+    origin: "*",
   });
 
   app.decorate("authenticate", tokenAuthMiddleware);
