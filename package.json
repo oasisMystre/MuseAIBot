@@ -1,9 +1,10 @@
 {
   "name": "suno",
-  "module": "src/index.ts",
-  "type": "module",
+  "module": "dist/src/index.ts",
   "scripts": {
-    "start": "bun run src/index.ts"
+    "build": "tsc",
+    "serve": "node dist/src/index.js",
+    "dev": "pnpm build && pnpm serve"
   },
   "devDependencies": {
     "@types/bun": "^1.0.12",

@@ -4,8 +4,8 @@ services:
      runtime: node
      plan: starter
      autoDeploy: true
-     buildCommand: bun install
-     startCommand:  bun start
+     buildCommand: pnpm build
+     startCommand:  pnpm start
      envVars:
        - fromGroup: museaibot
      domains:

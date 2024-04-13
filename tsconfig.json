@@ -1,31 +1,25 @@
 {
   "compilerOptions": {
-    "types": ["@types/bun"],
-    // Enable latest features
-    "lib": ["ESNext"],
     "target": "ESNext",
-    "module": "ESNext",
-    "moduleDetection": "force",
-    "jsx": "react-jsx",
-    "allowJs": true,
-
-    // Bundler mode
-    "moduleResolution": "bundler",
-    "allowImportingTsExtensions": true,
-    "verbatimModuleSyntax": true,
-    "noEmit": true,
+    "module": "CommonJS",
+    "moduleResolution": "Node",
     "esModuleInterop": true,
-
-    // Best practices
+    "noEmitOnError": true,
+    "resolveJsonModule": true,
+    "stripInternal": true,
+    "rootDir": ".",
+    "outDir": "dist",
     "strict": true,
-    "skipLibCheck": true,
-    "noFallthroughCasesInSwitch": true,
-
-    // Some stricter flags (disabled by default)
-    "noUnusedLocals": false,
-    "noUnusedParameters": false,
-    "noPropertyAccessFromIndexSignature": false,
-    "forceConsistentCasingInFileNames": true
+    "paths": {
+      "@/*": ["./src/*"]
+    },
+    "skipLibCheck": true
   },
-  "exclude": ["suno-app"]
+  "include": ["src"],
+  "ts-node": {
+    "files": true,
+    "compilerOptions": {
+      "module": "CommonJS"
+    }
+  }
 }
