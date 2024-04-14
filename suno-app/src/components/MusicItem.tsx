@@ -28,10 +28,10 @@ export default function MusicItem({
       className="flex flex-col cursor-pointer transition-all active:scale-98"
       onClick={() => onSelected({ audioInfo, library })}
     >
-      <div className="relative h-40">
+      <div className="relative">
         <img
           src={audioInfo.image_url}
-          className="w-full h-full rounded-md md:h-48 xl:h-56"
+          className="w-full h-40 rounded-md md:h-48 xl:h-56"
         />
         <button className="absolute top-2 right-2 p-1 bg-black/40 rounded-md">
           <MdMoreVert className="text-lg" />
