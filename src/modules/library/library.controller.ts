@@ -10,31 +10,45 @@ import {
   selectLibrariesSchema,
 } from "../../schema";
 
+export const getLibraries = function () {
+  return db.query.libraries
+    .findMany({
+      extras: {
+        likes: sql`cardinality(likes)`.as("likes"),
+      },
+    })
+    .execute();
+};
+
 export const getLibrariesOnlyByUser = function (
   values: z.infer<typeof getByUserIdLibrariesSchema>
 ) {
-  return db.query.libraries.findMany({
-    columns: { likes: false },
-    where: eq(libraries.userId, values.userId),
-    extras: {
-      likes: sql`cardinality(likes)`.as("likes"),
-    },
-  });
+  return db.query.libraries
+    .findMany({
+      columns: { likes: false },
+      where: eq(libraries.userId, values.userId),
+      extras: {
+        likes: sql`cardinality(likes)`.as("likes"),
+      },
+    })
+    .execute();
 };
 
 export const getLibraryOnlyByUser = function (
   values: z.infer<typeof selectLibrariesSchema>
 ) {
-  return db.query.libraries.findFirst({
-    columns: { likes: false },
-    where: and(
-      eq(libraries.id, values.id),
-      eq(libraries.userId, values.userId)
-    ),
-    extras: {
-      likes: count(libraries.likes).as("likes"),
-    },
-  });
+  return db.query.libraries
+    .findFirst({
+      columns: { likes: false },
+      where: and(
+        eq(libraries.id, values.id),
+        eq(libraries.userId, values.userId)
+      ),
+      extras: {
+        likes: count(libraries.likes).as("likes"),
+      },
+    })
+    .execute();
 };
 
 export const createLibrary = function (
@@ -51,7 +65,8 @@ export const updateLibrary = function (
     .update(libraries)
     .set(values)
     .where(eq(libraries.id, selector.id))
-    .returning();
+    .returning()
+    .execute();
 };
 
 export const deleteLibraryOnlyByUser = function (
@@ -62,5 +77,6 @@ export const deleteLibraryOnlyByUser = function (
     .where(
       and(eq(libraries.id, values.id), eq(libraries.userId, values.userId))
     )
-    .returning();
+    .returning()
+    .execute();
 };

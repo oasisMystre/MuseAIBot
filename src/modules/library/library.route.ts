@@ -2,13 +2,11 @@ import type { z } from "zod";
 import type { FastifyInstance, FastifyRequest } from "fastify";
 
 import { sunoApi } from "../../lib";
-import {
-  getLibrariesSchema,
-  insertLibrariesSchema,
-} from "../../schema";
+import { getLibrariesSchema, insertLibrariesSchema } from "../../schema";
 import {
   createLibrary,
   deleteLibraryOnlyByUser,
+  getLibraries,
   getLibrariesOnlyByUser,
   updateLibrary,
 } from "./library.controller";
@@ -29,6 +27,10 @@ const getLibrariesOnlyByUserRoute = async function (req: FastifyRequest) {
     const library = libraries.find((library) => library.id === audioInfo.id);
     return { audioInfo, library };
   });
+};
+
+export const getLibrariesRoute = async function () {
+  return getLibraries();
 };
 
 const createLibraryOnlyByUserRoute = async function (
@@ -101,6 +103,19 @@ const deleteLibrariesOnlyByUserRoute = async function (
 };
 
 export const libraryRoutes = function (fastify: FastifyInstance) {
+  fastify.route({
+    method: "GET",
+    url: "/libraries/explore/",
+    preHandler: fastify.authenticate,
+    handler: getLibraries,
+  });
+
+  fastify.route({
+    method: "GET",
+    url: "/libraries/",
+    preHandler: fastify.authenticate,
+    handler: getLibrariesOnlyByUserRoute,
+  });
   fastify.route({
     method: "GET",
     url: "/libraries/",
