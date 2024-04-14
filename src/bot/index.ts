@@ -49,14 +49,6 @@ export default function registerBot(bot: Telegraf<TelegramContext>) {
     },
   ]);
 
-  bot.on("message", async (ctx) => {
-    const message = ctx.message;
-
-    if ("text" in message) {
-      if (message.text === "/socials") return onHelp(ctx);
-      if (message.text === "/help") return onSocials(ctx);
-    }
-
-    await echo(ctx);
-  });
+  bot.command("socials", onSocials);
+  bot.command("help",  onHelp);
 }
