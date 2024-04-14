@@ -1,17 +1,19 @@
 import { BaseApi } from "./base.api";
+
+import type { Paginate } from "./models/paginate";
 import type { CreateLibrary, Library, LibraryAndAudioInfo } from "./models";
 
 export default class LibraryApi extends BaseApi {
   path: string = "libraries";
 
   getLibraries() {
-    return this.xior.get<LibraryAndAudioInfo[]>(
+    return this.xior.get<Paginate<LibraryAndAudioInfo>>(
       this.buildPath(this.path, "explore")
     );
   }
 
   getUserLibraries() {
-    return this.xior.get<LibraryAndAudioInfo[]>(this.path);
+    return this.xior.get<Paginate<LibraryAndAudioInfo>>(this.path);
   }
 
   getLibrary(id: number) {

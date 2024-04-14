@@ -35,7 +35,7 @@ export const librarySlice = createSlice({
       })
       .addCase(getUserLibraries.fulfilled, (state, { payload: { data } }) => {
         state.loadingState = "success";
-        libraryAdapter.setAll(state, data);
+        libraryAdapter.setAll(state, data.results);
       });
   },
 });

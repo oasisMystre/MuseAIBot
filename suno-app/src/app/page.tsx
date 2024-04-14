@@ -8,23 +8,27 @@ import Grid from "../components/elements/Grid";
 import MusicItem from "../components/MusicItem";
 import MusicListShim from "../components/MusicListShim";
 import MusicDetailDialog from "../components/MusicDetailDialog";
+import { useSearchParams } from "react-router-dom";
+import Search from "../components/elements/Search";
+import SearchEmpty from "../components/states/SearchEmpty";
 
 export default function HomePage() {
   const { loadingState, libraries } = useExplore();
   const [selectedLibrary, setSelectedLibrary] =
     useState<LibraryAndAudioInfo | null>(null);
 
+  const [searchParams] = useSearchParams();
+  const search = searchParams.get("search");
+
+  const filteredLibraries = libraries.filter((library) =>
+    search ? library.audioInfo.title.includes(search!) : true
+  );
+
   return (
     <main className="flex-1 flex flex-col space-y-4 p-4">
       <div className="flex flex-col space-y-4">
         <h1 className="text-2xl font-bold">Home</h1>
-        <div className="flex items-center bg-black/50 px-2 rounded-md focus-within:ring-3 ring-green-300">
-          <MdSearch />
-          <input
-            className="flex-1 bg-transparent p-2 !outline-none"
-            placeholder="Search with name, tags"
-          />
-        </div>
+        <Search />
       </div>
       {["pending", "idle"].includes(loadingState) && (
         <Grid>
@@ -32,9 +36,9 @@ export default function HomePage() {
         </Grid>
       )}
       {loadingState === "success" &&
-        (libraries.length > 0 ? (
+        (filteredLibraries.length > 0 ? (
           <Grid>
-            {libraries.map((library) => (
+            {filteredLibraries.map((library) => (
               <MusicItem
                 key={library.library.id}
                 item={library}
@@ -43,7 +47,7 @@ export default function HomePage() {
             ))}
           </Grid>
         ) : (
-          <MusicListShim />
+          <SearchEmpty />
         ))}
 
       {selectedLibrary && (

@@ -35,7 +35,7 @@ import {
         })
         .addCase(getLibraries.fulfilled, (state, { payload: { data } }) => {
           state.loadingState = "success";
-          exploreAdapter.setAll(state, data);
+          exploreAdapter.setAll(state, data.results);
         });
     },
   });

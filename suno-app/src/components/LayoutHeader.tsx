@@ -19,7 +19,7 @@ export default function LayoutHeader({ className }: React.PropsWithClassName) {
       >
         <div
           className={clsx(
-            "flex lt-md:mt-auto lt-md:flex-col lt-md:space-y-4 lt-md:py-4 lt-md:max-h-auto lt-md:bg-stone-950 lt-md:rounded-t-xl md:flex-1 md:items-center md:justify-center md:space-x-2",
+            "flex lt-md:min-w-sm lt-md:flex-col lt-md:space-y-4 lt-md:py-4 lt-md:max-h-auto lt-md:bg-stone-950 lt-md:rounded-xl md:flex-1 md:items-center md:justify-center md:space-x-2",
             { "animate-slide-in-up animate-duration-100": menuOpen }
           )}
         >

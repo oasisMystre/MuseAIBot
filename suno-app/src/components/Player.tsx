@@ -21,10 +21,10 @@ export default function Player() {
   };
 
   useEffect(() => {
-    audio.addEventListener("playing", onPlaying);
+    audio.addEventListener("timeupdate", onPlaying);
 
     return () => {
-      audio.removeEventListener("playing", onPlaying);
+      audio.removeEventListener("timeupdate", onPlaying);
     };
   }, []);
 
@@ -34,7 +34,7 @@ export default function Player() {
         <div className="bg-stone-700/50">
           <div
             style={{ width: `${seekPercentage}%` }}
-            className="bg-white p-0.2"
+            className="bg-white p-0.2 transition-width"
           />
         </div>
         <div className="flex space-x-2 items-center px-4 py-2">
