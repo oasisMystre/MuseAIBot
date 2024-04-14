@@ -19,7 +19,6 @@ export default function MusicItemMenu({
 
     const file = await urlToFile(audioInfo.audio_url, audioInfo.title);
     const shareData = {
-      title: audioInfo.title,
       files: [file],
     } satisfies ShareData;
 
