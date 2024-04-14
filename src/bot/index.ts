@@ -49,7 +49,7 @@ export default function registerBot(bot: Telegraf<TelegramContext>) {
     },
   ]);
 
-  bot.command("message", async (ctx) => {
+  bot.on("message", async (ctx) => {
     const message = ctx.message;
 
     if ("text" in message) {
