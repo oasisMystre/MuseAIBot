@@ -15,7 +15,7 @@ export default function Protected() {
       </div>
       <Link
          to="https://t.me/TheMuse_AI_Bot"
-         className="border border-green text-green rounded-md py-2">
+         className="text-center border border-green text-green rounded-md py-2">
         Open bot
       </Link>
     </div>
