@@ -69,6 +69,7 @@ const createLibraryOnlyByUserRoute = async function (
 
     for (const audioInfo of audioInfos) {
       const libraries = await createLibrary({
+        title: audioInfo.title ?? title,
         id: audioInfo.id,
         likes: [],
         userId: req.user.id,

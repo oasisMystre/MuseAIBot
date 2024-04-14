@@ -10,6 +10,7 @@ import {
 } from "drizzle-orm/pg-core";
 
 import { tokenGenerator } from "./utils/secret";
+import { string } from "zod";
 
 export const users = pgTable("users", {
   id: text("id").primaryKey(),
@@ -25,6 +26,7 @@ export const getUsersSchema = insertUsersSchema.pick({ id: true });
 
 export const userRelations = relations(users, ({ many }) => ({
   token: many(tokens),
+  libraries: many(libraries),
 }));
 
 export const tokens = pgTable("tokens", {
@@ -53,24 +55,31 @@ export const getTokensByUserIdSchema = selectTokensSchema.pick({
 
 export const libraries = pgTable("libraries", {
   id: uuid("id").primaryKey(),
+  title: text("title"),
   updateAt: timestamp("updated_at").defaultNow(),
   createdAt: timestamp("created_at").defaultNow(),
   plays: integer("plays").default(0).notNull(),
   likes: integer("likes").array().notNull(),
-  userId: text("user_id").notNull(),
+  userId: text("user_id")
+    .notNull()
+    .references(() => users.id, { onDelete: "cascade" }),
 });
+
+export const librariesRelations = relations(libraries, ({ one }) => ({
+  user: one(users, {
+    fields: [libraries.userId],
+    references: [users.id],
+  }),
+}));
 
 export const selectLibrariesSchema = createSelectSchema(libraries).pick({
   id: true,
   userId: true,
 });
-
 export const insertLibrariesSchema = createInsertSchema(libraries);
-
 export const getLibrariesSchema = selectLibrariesSchema.pick({
   id: true,
 });
-
 export const getByUserIdLibrariesSchema = selectLibrariesSchema.pick({
   userId: true,
 });
@@ -81,4 +90,5 @@ export default {
   libraries,
   userRelations,
   tokenRelations,
+  librariesRelations,
 } as const;

@@ -1,5 +1,5 @@
 {
-  "id": "f83ab968-39db-4034-9afe-f3152fe02448",
+  "id": "60f58e9d-b41b-4c2b-8f86-c4b266315ca7",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "5",
   "dialect": "pg",
@@ -13,6 +13,12 @@
           "type": "uuid",
           "primaryKey": true,
           "notNull": true
+        },
+        "title": {
+          "name": "title",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
         },
         "updated_at": {
           "name": "updated_at",
@@ -49,7 +55,21 @@
         }
       },
       "indexes": {},
-      "foreignKeys": {},
+      "foreignKeys": {
+        "libraries_user_id_users_id_fk": {
+          "name": "libraries_user_id_users_id_fk",
+          "tableFrom": "libraries",
+          "tableTo": "users",
+          "columnsFrom": [
+            "user_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
