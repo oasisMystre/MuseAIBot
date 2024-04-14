@@ -5,11 +5,11 @@ import {
   } from "@reduxjs/toolkit";
   
   import { Api } from "../../lib/api";
-  import type { Library, LibraryAndAudioInfo } from "../../lib/api/models";
+  import type { LibraryAndAudioInfo } from "../../lib/api/models";
   
   import type { LoadingState } from "../types";
   
-  export const getUserLibraries = createAsyncThunk(
+  export const getLibraries = createAsyncThunk(
     "libraries/getUserLibraries",
     (api: Api) => api.library.getLibraries()
   );
@@ -27,13 +27,13 @@ import {
     },
     extraReducers(builder) {
       builder
-        .addCase(getUserLibraries.pending, (state) => {
+        .addCase(getLibraries.pending, (state) => {
           state.loadingState = "pending";
         })
-        .addCase(getUserLibraries.rejected, (state) => {
+        .addCase(getLibraries.rejected, (state) => {
           state.loadingState = "failed";
         })
-        .addCase(getUserLibraries.fulfilled, (state, { payload: { data } }) => {
+        .addCase(getLibraries.fulfilled, (state, { payload: { data } }) => {
           state.loadingState = "success";
           exploreAdapter.setAll(state, data);
         });

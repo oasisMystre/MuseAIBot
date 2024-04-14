@@ -3,10 +3,12 @@ import { useDispatch, useSelector } from "react-redux";
 import type { TypedUseSelectorHook } from "react-redux";
 
 import { libraryReducer } from "./slices/librarySlice";
+import { exploreReducer } from "./slices/exploreSlice";
 
 export const store = configureStore({
   reducer: {
     library: libraryReducer,
+    explore: exploreReducer,
   },
 });
 

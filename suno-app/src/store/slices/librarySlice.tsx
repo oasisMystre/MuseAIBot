@@ -5,13 +5,13 @@ import {
 } from "@reduxjs/toolkit";
 
 import { Api } from "../../lib/api";
-import type { Library, LibraryAndAudioInfo } from "../../lib/api/models";
+import type { LibraryAndAudioInfo } from "../../lib/api/models";
 
 import type { LoadingState } from "../types";
 
 export const getUserLibraries = createAsyncThunk(
   "libraries/getUserLibraries",
-  (api: Api) => api.library.getLibraries()
+  (api: Api) => api.library.getUserLibraries()
 );
 const libraryAdapter = createEntityAdapter({
   selectId: (model: LibraryAndAudioInfo) => model.library.id,

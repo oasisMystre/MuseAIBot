@@ -101,7 +101,7 @@ export const libraryRoutes = function (fastify: FastifyInstance) {
     method: "GET",
     url: "/libraries/explore/",
     preHandler: fastify.authenticate,
-    handler: getLibraries,
+    handler: getLibrariesRoute,
   });
 
   fastify.route({

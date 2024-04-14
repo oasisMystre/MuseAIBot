@@ -1,7 +1,19 @@
+import { useState } from "react";
 import { MdSearch } from "react-icons/md";
+
+import useExplore from "../composables/useExplore";
+import { LibraryAndAudioInfo } from "../lib/api/models";
+
+import Grid from "../components/elements/Grid";
+import MusicItem from "../components/MusicItem";
 import MusicListShim from "../components/MusicListShim";
+import MusicDetailDialog from "../components/MusicDetailDialog";
 
 export default function HomePage() {
+  const { loadingState, libraries } = useExplore();
+  const [selectedLibrary, setSelectedLibrary] =
+    useState<LibraryAndAudioInfo | null>(null);
+
   return (
     <main className="flex-1 flex flex-col space-y-4 p-4">
       <div className="flex flex-col space-y-4">
@@ -14,9 +26,32 @@ export default function HomePage() {
           />
         </div>
       </div>
-      <div className="flex-1 grid grid-cols-3 gap-2 overflow-y-scroll md:grid-cols-5 xl:grid-cols-7">
-        <MusicListShim />
-      </div>
+      {["pending", "idle"].includes(loadingState) && (
+        <Grid>
+          <MusicListShim />
+        </Grid>
+      )}
+      {loadingState === "success" &&
+        (libraries.length > 0 ? (
+          <Grid>
+            {libraries.map((library) => (
+              <MusicItem
+                key={library.library.id}
+                item={library}
+                onSelected={setSelectedLibrary}
+              />
+            ))}
+          </Grid>
+        ) : (
+          <MusicListShim />
+        ))}
+
+      {selectedLibrary && (
+        <MusicDetailDialog
+          library={selectedLibrary}
+          onClose={() => setSelectedLibrary(null)}
+        />
+      )}
     </main>
   );
 }
