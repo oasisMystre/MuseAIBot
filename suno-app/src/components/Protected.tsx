@@ -13,11 +13,11 @@ export default function Protected() {
           Please open webapp with our telegram bot
         </p>
       </div>
-      <button 
+      <Link
          to="https://t.me/TheMuse_AI_Bot"
          className="border border-green text-green rounded-md py-2">
         Open bot
-      </button>
+      </Link>
     </div>
   );
 }
