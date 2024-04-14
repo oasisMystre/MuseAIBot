@@ -22,7 +22,9 @@ const echo = async function (ctx: TelegramContext) {
 const onHelp = function (ctx: TelegramContext) {
   return ctx.replyWithMarkdownV2(
     "*MuseAI* \n\n MuseAI is a generative AI bot that helps you create music and instrumentals. \n\n *How to use?* \n - Start up the bot using /start command \n - Launch the telegram webapp using the inline button \n"
-  );
+  )
+  .replace(/\-/g, "\\-")
+  .replace(/\./g, "\\.");
 };
 
 const onSocials = function (ctx: TelegramContext) {
