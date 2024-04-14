@@ -1,4 +1,6 @@
 import { MdMoreVert, MdPlayArrow } from "react-icons/md";
+
+import usePlayer from "../composables/usePlayer";
 import { LibraryAndAudioInfo } from "../lib/api/models";
 
 type MusicItemProps = {
@@ -10,6 +12,17 @@ export default function MusicItem({
   item: { audioInfo, library },
   onSelected,
 }: MusicItemProps) {
+  const {
+    audio,
+    setQueue,
+    playAudio,
+    currentPlaying,
+    next,
+    previous,
+    toggle,
+    isPlaying,
+  } = usePlayer();
+
   return (
     <div
       className="flex flex-col cursor-pointer transition-all active:scale-98"
@@ -25,10 +38,13 @@ export default function MusicItem({
         </button>
         <button
           className="absolute bottom-2 right-2 bg-green-500 p-2 rounded-full"
-          onClick={() => {
-            const audio = new Audio();
-            audio.src = audioInfo.audio_url;
-            audio.play();
+          onClick={(event) => {
+            event.preventDefault();
+            event.stopPropagation();
+
+            const libraryAndAudioInfo = { audioInfo, library };
+            setQueue([libraryAndAudioInfo]);
+            playAudio(libraryAndAudioInfo);
           }}
         >
           <MdPlayArrow className="text-2xl" />

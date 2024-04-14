@@ -5,8 +5,11 @@ import { Provider } from "react-redux";
 import { ToastContainer } from "react-toastify";
 
 import { store } from "../store";
-import LayoutHeader from "./LayoutHeader";
 import AuthProvider from "../providers/AuthProvider";
+import PlayerProvider from "../providers/PlayerProvider";
+
+import Player from "./Player";
+import LayoutHeader from "./LayoutHeader";
 
 export default function Layout() {
   return (
@@ -14,11 +17,14 @@ export default function Layout() {
       <div className="flex-1 flex flex-col bg-gradient-to-b from-green/10 to-black overflow-y-scroll">
         <Provider store={store}>
           <AuthProvider>
-            <LayoutHeader className="lt-md:order-last" />
-            <div className="flex-1 flex  lt-md:order-first overflow-y-scroll">
-              <Outlet />
-              <ToastContainer />
-            </div>
+            <PlayerProvider>
+              <LayoutHeader />
+              <div className="flex-1 flex  overflow-y-scroll">
+                <Outlet />
+                <ToastContainer />
+              </div>
+              <Player />
+            </PlayerProvider>
           </AuthProvider>
         </Provider>
       </div>

@@ -51,7 +51,6 @@ export default function registerBot(bot: Telegraf<TelegramContext>) {
 
   bot.command("message", async (ctx) => {
     const message = ctx.message;
-    console.log(message)
 
     if ("text" in message) {
       if (message.text === "/socials") return onHelp(ctx);

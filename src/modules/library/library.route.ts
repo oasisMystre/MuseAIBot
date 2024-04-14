@@ -8,29 +8,23 @@ import {
   deleteLibraryOnlyByUser,
   getLibraries,
   getLibrariesOnlyByUser,
+  mapLibrariesWithAudioInfos,
   updateLibrary,
 } from "./library.controller";
 import { createDto } from "./dto/create.dto";
 
 const getLibrariesOnlyByUserRoute = async function (req: FastifyRequest) {
-  const suno = await sunoApi;
   const libraries = await getLibrariesOnlyByUser({
     userId: req.user.id,
   });
 
-  if (libraries.length === 0) return [];
-
-  const songIds = libraries.map(({ id }) => id);
-  const audioInfos = await suno.get(songIds);
-
-  return audioInfos.map((audioInfo) => {
-    const library = libraries.find((library) => library.id === audioInfo.id);
-    return { audioInfo, library };
-  });
+  return mapLibrariesWithAudioInfos(libraries);
 };
 
 export const getLibrariesRoute = async function () {
-  return getLibraries();
+  const libraries = await getLibraries();
+
+  return mapLibrariesWithAudioInfos(libraries);
 };
 
 const createLibraryOnlyByUserRoute = async function (

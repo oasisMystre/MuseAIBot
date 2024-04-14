@@ -2,6 +2,7 @@ import type { z } from "zod";
 import { and, count, eq, sql } from "drizzle-orm";
 
 import { db } from "../../db";
+import { sunoApi } from "../../lib";
 import {
   getByUserIdLibrariesSchema,
   getLibrariesSchema,
@@ -79,4 +80,20 @@ export const deleteLibraryOnlyByUser = function (
     )
     .returning()
     .execute();
+};
+
+export const mapLibrariesWithAudioInfos = async function (
+  libraries: Awaited<ReturnType<typeof getLibrariesOnlyByUser>>
+) {
+  const suno = await sunoApi;
+
+  if (libraries.length === 0) return [];
+
+  const songIds = libraries.map(({ id }) => id);
+  const audioInfos = await suno.get(songIds);
+
+  return audioInfos.map((audioInfo) => {
+    const library = libraries.find((library) => library.id === audioInfo.id);
+    return { audioInfo, library };
+  });
 };

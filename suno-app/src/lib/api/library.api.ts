@@ -5,11 +5,19 @@ export default class LibraryApi extends BaseApi {
   path: string = "libraries";
 
   getLibraries() {
+    return this.xior.get<LibraryAndAudioInfo[]>(
+      this.buildPath(this.path, "explore")
+    );
+  }
+
+  getUserLibraries() {
     return this.xior.get<LibraryAndAudioInfo[]>(this.path);
   }
 
   getLibrary(id: number) {
-    return this.xior.get<LibraryAndAudioInfo>(this.buildPath(this.buildPath, id));
+    return this.xior.get<LibraryAndAudioInfo>(
+      this.buildPath(this.buildPath, id)
+    );
   }
 
   createLibrary(data: CreateLibrary) {
