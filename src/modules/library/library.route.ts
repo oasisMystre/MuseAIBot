@@ -44,7 +44,7 @@ export const getLibrariesRoute = async function (
   return {
     offset,
     limit,
-    result: await mapLibrariesWithAudioInfos(libraries),
+    results: await mapLibrariesWithAudioInfos(libraries),
   };
 };
 
