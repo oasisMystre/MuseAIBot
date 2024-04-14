@@ -116,12 +116,6 @@ export const libraryRoutes = function (fastify: FastifyInstance) {
     preHandler: fastify.authenticate,
     handler: getLibrariesOnlyByUserRoute,
   });
-  fastify.route({
-    method: "GET",
-    url: "/libraries/",
-    preHandler: fastify.authenticate,
-    handler: getLibrariesOnlyByUserRoute,
-  });
 
   fastify.route({
     method: "POST",

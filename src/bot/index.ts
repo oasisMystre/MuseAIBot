@@ -13,8 +13,6 @@ const echo = async function (ctx: TelegramContext) {
     languageCode: user.language_code,
   });
 
-  console.log(url);
-
   await ctx.replyWithMarkdownV2(
     "*Let's get started* \n \n Please tap the button below to launch MuseAI",
     Markup.inlineKeyboard([Markup.button.webApp("Launch App", url)])
@@ -53,6 +51,7 @@ export default function registerBot(bot: Telegraf<TelegramContext>) {
 
   bot.command("message", async (ctx) => {
     const message = ctx.message;
+    console.log(message)
 
     if ("text" in message) {
       if (message.text === "/socials") return onHelp(ctx);
