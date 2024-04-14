@@ -12,19 +12,40 @@ import {
   updateLibrary,
 } from "./library.controller";
 import { createDto } from "./dto/create.dto";
+import { paginateSchema } from "../dto/paginate.dto";
 
-const getLibrariesOnlyByUserRoute = async function (req: FastifyRequest) {
-  const libraries = await getLibrariesOnlyByUser({
-    userId: req.user.id,
-  });
+const getLibrariesOnlyByUserRoute = async function (
+  req: FastifyRequest<{ Querystring: z.infer<typeof paginateSchema> }>
+) {
+  const { offset, limit } = await paginateSchema.parseAsync(req.query);
 
-  return mapLibrariesWithAudioInfos(libraries);
+  const libraries = await getLibrariesOnlyByUser(
+    {
+      userId: req.user.id,
+    },
+    offset,
+    limit
+  );
+
+  return {
+    offset,
+    limit,
+    results: await mapLibrariesWithAudioInfos(libraries),
+  };
 };
 
-export const getLibrariesRoute = async function () {
-  const libraries = await getLibraries();
+export const getLibrariesRoute = async function (
+  req: FastifyRequest<{ Querystring: z.infer<typeof paginateSchema> }>
+) {
+  const { offset, limit } = await paginateSchema.parseAsync(req.query);
 
-  return mapLibrariesWithAudioInfos(libraries);
+  const libraries = await getLibraries(offset, limit);
+
+  return {
+    offset,
+    limit,
+    result: await mapLibrariesWithAudioInfos(libraries),
+  };
 };
 
 const createLibraryOnlyByUserRoute = async function (

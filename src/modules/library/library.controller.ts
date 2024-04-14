@@ -1,5 +1,5 @@
 import type { z } from "zod";
-import { and, count, eq, sql } from "drizzle-orm";
+import { and, count, desc, eq, sql } from "drizzle-orm";
 
 import { db } from "../../db";
 import { sunoApi } from "../../lib";
@@ -11,18 +11,23 @@ import {
   selectLibrariesSchema,
 } from "../../schema";
 
-export const getLibraries = function () {
+export const getLibraries = function (offset = 0, limit = 24) {
   return db.query.libraries
     .findMany({
       extras: {
         likes: sql`cardinality(likes)`.as("likes"),
       },
+      offset,
+      limit,
+      orderBy: [desc(libraries.updateAt), desc(libraries.createdAt)],
     })
     .execute();
 };
 
 export const getLibrariesOnlyByUser = function (
-  values: z.infer<typeof getByUserIdLibrariesSchema>
+  values: z.infer<typeof getByUserIdLibrariesSchema>,
+  offset = 0,
+  limit = 24
 ) {
   return db.query.libraries
     .findMany({
@@ -31,6 +36,9 @@ export const getLibrariesOnlyByUser = function (
       extras: {
         likes: sql`cardinality(likes)`.as("likes"),
       },
+      offset,
+      limit,
+      orderBy: [desc(libraries.updateAt), desc(libraries.createdAt)],
     })
     .execute();
 };

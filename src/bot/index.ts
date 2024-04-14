@@ -1,5 +1,7 @@
 import { Markup, type Telegraf } from "telegraf";
 import type { TelegramContext } from "../context";
+
+import { readFileSync } from "../utils/text";
 import { buildPathWithQuery } from "../utils/url";
 
 const echo = async function (ctx: TelegramContext) {
@@ -14,23 +16,17 @@ const echo = async function (ctx: TelegramContext) {
   });
 
   await ctx.replyWithMarkdownV2(
-    "*Let's get started* \n \n Please tap the button below to launch MuseAI",
+    readFileSync("./src/bot/locales/en/start.md"),
     Markup.inlineKeyboard([Markup.button.webApp("Launch App", url)])
   );
 };
 
 const onHelp = function (ctx: TelegramContext) {
-  return ctx.replyWithMarkdownV2(
-    "*MuseAI* \n\n MuseAI is a generative AI bot that helps you create music and instrumentals. \n\n *How to use?* \n - Start up the bot using /start command \n - Launch the telegram webapp using the inline button \n"
-  )
-  .replace(/\-/g, "\\-")
-  .replace(/\./g, "\\.");
+  return ctx.replyWithMarkdownV2(readFileSync("./src/bot/locales/en/help.md"));
 };
 
 const onSocials = function (ctx: TelegramContext) {
-  return ctx.replyWithMarkdownV2(
-    "*Join our socials* \n [Telegram]() \n [x]() \n\n Or visit our website [MuseAI]()"
-  );
+  return ctx.replyWithMarkdownV2(readFileSync("./src/bot/locales/en/socials.md"));
 };
 
 export default function registerBot(bot: Telegraf<TelegramContext>) {
@@ -52,5 +48,5 @@ export default function registerBot(bot: Telegraf<TelegramContext>) {
   ]);
 
   bot.command("socials", onSocials);
-  bot.command("help",  onHelp);
+  bot.command("help", onHelp);
 }
