@@ -10,7 +10,7 @@ export default function LayoutHeader({ className }: React.PropsWithClassName) {
 
   return (
     <header className={clsx(className, "flex items-center md:space-x-2 p-4")}>
-      <div className="">Header</div>
+      <div className="text-2xl font-extrabold">MuseAI</div>
       <div
         className={clsx(
           "flex-1 lt-md:fixed lt-md:inset-0 lt-md:flex-col lt-md:bg-black/50 lt-md:z-100",
