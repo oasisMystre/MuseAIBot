@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { MdLock } from "react-icons/md";
 
 export default function Protected() {
@@ -12,7 +13,9 @@ export default function Protected() {
           Please open webapp with our telegram bot
         </p>
       </div>
-      <button className="border border-green text-green rounded-md py-2">
+      <button 
+         to="https://t.me/TheMuse_AI_Bot"
+         className="border border-green text-green rounded-md py-2">
         Open bot
       </button>
     </div>
