@@ -1,11 +1,13 @@
 import clsx from "clsx";
 import { useState } from "react";
+import { useLocation } from "react-router";
 import { Link } from "react-router-dom";
-import { MdClose, MdMenu } from "react-icons/md";
+import { MdAdd, MdClose, MdMenu } from "react-icons/md";
 
 import { layoutNavigations } from "../config/navigations";
 
 export default function LayoutHeader({ className }: React.PropsWithClassName) {
+  const location = useLocation();
   const [menuOpen, setMenuOpen] = useState(false);
 
   return (
@@ -46,7 +48,16 @@ export default function LayoutHeader({ className }: React.PropsWithClassName) {
           </div>
         </div>
       </div>
-      <div className="flex lt-md:flex-1">
+      <div className="ml-auto flex space-x-4">
+        {!location.pathname.includes("create") && (
+          <Link
+            to="/create"
+            className="flex space-x-2 items-center ml-auto bg-green text-black px-4 py-2 rounded-md"
+          >
+            <MdAdd className="text-xl" />
+            <span>Create</span>
+          </Link>
+        )}
         <button
           className="ml-auto border border-stone-900 bg-stone-950 p-2 rounded-md md:hidden"
           onClick={() => setMenuOpen(true)}

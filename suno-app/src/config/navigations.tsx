@@ -8,18 +8,13 @@ type Navigation = {
 
 export const layoutNavigations: Navigation[] = [
   {
-    name: "Home",
+    name: "Library",
     href: "/",
-    icon: <MdHome />,
+    icon: <MdLibraryMusic />,
   },
   {
     name: "Create",
     href: "/create",
     icon: <MdCreate />,
-  },
-  {
-    name: "Library",
-    href: "/library",
-    icon: <MdLibraryMusic />,
   },
 ];

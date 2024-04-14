@@ -1,19 +1,18 @@
 import { useState } from "react";
-import { MdSearch } from "react-icons/md";
+import { useSearchParams } from "react-router-dom";
 
-import useExplore from "../composables/useExplore";
+import useLibraries from "../composables/useLibraries";
 import { LibraryAndAudioInfo } from "../lib/api/models";
 
 import Grid from "../components/elements/Grid";
 import MusicItem from "../components/MusicItem";
+import Search from "../components/elements/Search";
 import MusicListShim from "../components/MusicListShim";
 import MusicDetailDialog from "../components/MusicDetailDialog";
-import { useSearchParams } from "react-router-dom";
-import Search from "../components/elements/Search";
-import SearchEmpty from "../components/states/SearchEmpty";
+import LibraryEmptyState from "../components/states/LibraryEmptyState";
 
-export default function HomePage() {
-  const { loadingState, libraries } = useExplore();
+export default function LibraryPage() {
+  const { loadingState, libraries } = useLibraries();
   const [selectedLibrary, setSelectedLibrary] =
     useState<LibraryAndAudioInfo | null>(null);
 
@@ -21,15 +20,23 @@ export default function HomePage() {
   const search = searchParams.get("search");
 
   const filteredLibraries = libraries.filter((library) =>
-    search ? library.audioInfo.title.includes(search!) : true
+    search
+      ? library.audioInfo.title.toLowerCase().includes(search!.toLowerCase()) ||
+        library.audioInfo.tags.toLowerCase().includes(search!.toLowerCase())
+      : true
   );
 
   return (
     <main className="flex-1 flex flex-col space-y-4 p-4">
-      <div className="flex flex-col space-y-4">
-        <h1 className="text-2xl font-bold">Home</h1>
-        <Search />
-      </div>
+      <header className="flex flex-col space-y-4">
+        <h1 className="text-2xl font-bold">Library</h1>
+        {libraries.length > 0 && <Search />}
+        <div>
+          <button className="flex items-center space-x-2 border-b-2 p-2">
+            <span className="flex-1">Songs</span>
+          </button>
+        </div>
+      </header>
       {["pending", "idle"].includes(loadingState) && (
         <Grid>
           <MusicListShim />
@@ -47,7 +54,7 @@ export default function HomePage() {
             ))}
           </Grid>
         ) : (
-          <SearchEmpty />
+          <LibraryEmptyState />
         ))}
 
       {selectedLibrary && (

@@ -22,7 +22,7 @@ export default function MusicItem({
       <div className="relative">
         <img
           src={audioInfo.image_url}
-          className="w-full h-40 rounded-md md:h-48 xl:h-56"
+          className="w-full h-40 rounded-md sm:h-56 object-cover"
         />
         <button className="absolute top-2 right-2 p-1 bg-black/40 rounded-md">
           <MdMoreVert className="text-lg" />
