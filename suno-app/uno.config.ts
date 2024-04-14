@@ -2,6 +2,8 @@ import {
   defineConfig,
   presetUno,
   presetWind,
+  presetWebFonts,
+  presetTypography,
   transformerDirectives,
 } from "unocss";
 
@@ -15,6 +17,16 @@ export default defineConfig({
     "input-border":
       "border border-1 border-stone-700 p-2 bg-transparent rounded-md focus:outline-none focus:outline-none",
   },
-  presets: [presetUno(), presetWind()],
+  presets: [
+    presetUno(),
+    presetWind(),
+    presetTypography(),
+    presetWebFonts({
+      provider: "google",
+      fonts: {
+        sans: "Poppins",
+      },
+    }),
+  ],
   transformers: [transformerDirectives()],
 });
