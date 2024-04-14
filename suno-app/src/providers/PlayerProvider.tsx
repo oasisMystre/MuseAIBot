@@ -68,6 +68,7 @@ export default function PlayerProvider({ children }: React.PropsWithChildren) {
   useEffect(() => {
     audio.addEventListener("play", () => setIsPlaying(true));
     audio.addEventListener("pause", () => setIsPlaying(false));
+    audio.addEventListener("ended", () => setIsPlaying(false));
 
     return () => audio.remove();
   }, []);

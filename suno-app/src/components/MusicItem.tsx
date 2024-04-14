@@ -12,16 +12,7 @@ export default function MusicItem({
   item: { audioInfo, library },
   onSelected,
 }: MusicItemProps) {
-  const {
-    audio,
-    setQueue,
-    playAudio,
-    currentPlaying,
-    next,
-    previous,
-    toggle,
-    isPlaying,
-  } = usePlayer();
+  const { setQueue, playAudio } = usePlayer();
 
   return (
     <div
