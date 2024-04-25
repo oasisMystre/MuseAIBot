@@ -84,7 +84,6 @@ class SunoApi {
       await sleep(1, 2);
     }
     const newToken = renewResponse.data["jwt"];
-    console.log("newToken:===\n\n", newToken);
     // Update Authorization field in request header with the new JWT token
     this.currentToken = newToken;
   }

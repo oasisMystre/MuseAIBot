@@ -14,7 +14,6 @@ export const sleep = (x: number, y?: number): Promise<void> => {
     const max = Math.max(x, y);
     timeout = Math.floor(Math.random() * (max - min + 1) + min) * 1000;
   }
-  // console.log(`Sleeping for ${timeout / 1000} seconds`);
   logger.info(`Sleeping for ${timeout / 1000} seconds`);
 
   return new Promise(resolve => setTimeout(resolve, timeout));
