@@ -3,6 +3,7 @@ import { createContext, useEffect, useMemo, useState } from "react";
 import { LibraryAndAudioInfo } from "../lib/api/models";
 
 export type PlayerContextParams = {
+  destroy: () => void,
   playAudio: (value: LibraryAndAudioInfo) => void;
   audio: HTMLAudioElement;
   previous: () => void;
@@ -65,6 +66,12 @@ export default function PlayerProvider({ children }: React.PropsWithChildren) {
     else audio.pause();
   };
 
+  const destroy = function(){
+    setCurrentPlaying(null);
+    audio.pause();
+    setQueue([]);
+  }
+
   useEffect(() => {
     audio.addEventListener("play", () => setIsPlaying(true));
     audio.addEventListener("pause", () => setIsPlaying(false));
@@ -76,6 +83,7 @@ export default function PlayerProvider({ children }: React.PropsWithChildren) {
   return (
     <PlayerContext.Provider
       value={{
+        destroy,
         currentPlaying,
         queue,
         audio,
