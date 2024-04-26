@@ -43,7 +43,7 @@ export default function AuthProvider({ children }: React.PropsWithChildren) {
       </AuthContext.Provider>
     )
   ) : loadingState === "pending" ? (
-    <div className="m-auto w-8 h-8 border-3 border-green rounded-full border-t-transparent animate-spin"></div>
+    <div className="m-auto w-8 h-8 border-3 border-white rounded-full border-t-transparent animate-spin"></div>
   ) : (
     <Protected />
   );
