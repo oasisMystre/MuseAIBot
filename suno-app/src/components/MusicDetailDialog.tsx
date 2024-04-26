@@ -18,7 +18,7 @@ export default function MusicDetailDialog({
   return (
     <div className="fixed inset-0 bg-black/50 overflow-y-scroll z-10">
       <div className="h-full flex flex-col space-y-8 bg-stone-950 mt-18 pb-16 rounded-t-xl overflow-y-scroll">
-        <div className="flex flex-col space-y-8 bg-green-950/50 px-8 pt-8 pb-10 rounded-t-xl">
+        <div className="flex flex-col space-y-8 bg-stone-900/50 px-8 pt-8 pb-10 rounded-t-xl">
           <div className="flex">
             <button onClick={onClose}>
               <MdClose className="text-xl" />
@@ -41,7 +41,7 @@ export default function MusicDetailDialog({
             </small>
           </div>
           <button
-            className="self-start flex space-x-2 items-center bg-green-50/20 px-4 py-2 rounded-md"
+            className="self-start flex space-x-2 items-center bg-white text-black px-4 py-2 rounded-md"
             onClick={() => {
               const libraryAndAudioInfo = { audioInfo, library };
               playAudio(libraryAndAudioInfo);

@@ -12,8 +12,11 @@
   "dependencies": {
     "@headlessui/react": "^1.7.18",
     "@reduxjs/toolkit": "^2.2.3",
+    "@telegram-web-app/core": "0.0.1-beta.1",
+    "@telegram-web-app/react": "0.0.1-beta.1",
     "@types/react": "^18.2.75",
     "@types/react-dom": "^18.2.24",
+    "@types/telegram-web-app": "^7.2.1",
     "@unocss/reset": "^0.59.1",
     "clsx": "^2.1.0",
     "formik": "^2.4.5",

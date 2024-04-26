@@ -1,5 +1,3 @@
-import { MdMoreVert, MdPlayArrow } from "react-icons/md";
-
 export default function MusicListShim() {
   return (
     <>

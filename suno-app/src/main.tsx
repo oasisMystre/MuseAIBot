@@ -5,13 +5,13 @@ import React from "react";
 import { createRoot } from "react-dom/client";
 import { RouterProvider } from "react-router";
 import { createBrowserRouter } from "react-router-dom";
+import { TelegramWebAppProvider } from "@telegram-web-app/react";
 
 import "./index.css";
 
 import HomePage from "./app/page";
 import Layout from "./components/Layout";
 import CreatePage from "./app/create/page";
-import LibraryPage from "./app/page";
 
 const container = document.getElementById("root");
 const root = createRoot(container!);
@@ -35,6 +35,8 @@ const router = createBrowserRouter([
 
 root.render(
   <React.StrictMode>
-    <RouterProvider router={router} />
+    <TelegramWebAppProvider>
+      <RouterProvider router={router} />
+    </TelegramWebAppProvider>
   </React.StrictMode>
 );
