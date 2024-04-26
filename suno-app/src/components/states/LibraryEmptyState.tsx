@@ -4,8 +4,8 @@ import { MdLibraryMusic } from "react-icons/md";
 export default function LibraryEmptyState() {
   return (
     <div className="flex-1 flex flex-col space-y-2 items-center justify-center">
-      <button className="bg-green-500 p-3 rounded-full">
-        <MdLibraryMusic className="text-2xl" />
+      <button className="bg-white p-3 rounded-full">
+        <MdLibraryMusic className="text-2xl text-black" />
       </button>
       <div className="text-center">
         <h1 className="text-lg font-medium">No song found</h1>

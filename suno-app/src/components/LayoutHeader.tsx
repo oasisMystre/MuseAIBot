@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import { MdAdd, MdClose, MdMenu } from "react-icons/md";
 
 import { layoutNavigations } from "../config/navigations";
+import { IcLogo } from "../assets";
 
 export default function LayoutHeader({ className }: React.PropsWithClassName) {
   const location = useLocation();
@@ -12,7 +13,16 @@ export default function LayoutHeader({ className }: React.PropsWithClassName) {
 
   return (
     <header className={clsx(className, "flex items-center md:space-x-2 p-4")}>
-      <div className="text-2xl font-extrabold">MuseAI</div>
+      <Link
+        to="/"
+        className="text-2xl font-extrabold"
+      >
+        <img
+          src={IcLogo.default}
+          width={72}
+          height={72}
+        />
+      </Link>
       <div
         className={clsx(
           "flex-1 lt-md:fixed lt-md:inset-0 lt-md:flex-col lt-md:bg-black/50 lt-md:z-100",
@@ -52,7 +62,7 @@ export default function LayoutHeader({ className }: React.PropsWithClassName) {
         {!location.pathname.includes("create") && (
           <Link
             to="/create"
-            className="flex space-x-2 items-center ml-auto bg-green text-black px-4 py-2 rounded-md"
+            className="flex space-x-2 items-center ml-auto bg-white text-black px-4 py-2 rounded-md"
           >
             <MdAdd className="text-xl" />
             <span>Create</span>

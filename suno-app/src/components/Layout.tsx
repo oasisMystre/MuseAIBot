@@ -14,7 +14,7 @@ import LayoutHeader from "./LayoutHeader";
 export default function Layout() {
   return (
     <main className="fixed inset-0 flex flex-col bg-black text-white overflow-y-scroll font-sans">
-      <div className="flex-1 flex flex-col bg-gradient-to-b from-green/10 to-black overflow-y-scroll">
+      <div className="flex-1 flex flex-col bg-gradient-to-b from-black/10 to-black overflow-y-scroll">
         <Provider store={store}>
           <AuthProvider>
             <PlayerProvider>

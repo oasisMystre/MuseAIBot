@@ -90,7 +90,7 @@ export default function CreatePage() {
                 </div>
                 <button
                   disabled={isSubmitting}
-                  className="flex items-center justify-center bg-green-500 text-black py-2 rounded-md hover:bg-green-500/80 active:bg-green-500"
+                  className="flex items-center justify-center bg-white text-black py-2 rounded-md hover:bg-green-500/80 active:bg-green-500"
                 >
                   {isSubmitting ? (
                     <div className="w-6 h-6 border-3 border-t-transparent border-black rounded-full animate-spin" />
