@@ -58,7 +58,7 @@ export default function Player() {
               <MdSkipPrevious className="text-xl" />
             </button>
             <button
-              className="bg-green text-white p-2 rounded-full"
+              className="bg-white text-black p-2 rounded-full"
               onClick={toggle}
             >
               {isPlaying ? (

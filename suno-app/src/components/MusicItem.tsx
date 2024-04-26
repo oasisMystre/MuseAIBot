@@ -4,13 +4,21 @@ import usePlayer from "../composables/usePlayer";
 import { LibraryAndAudioInfo } from "../lib/api/models";
 
 import MusicItemMenu from "./MusicItemMenu";
+import useLibraries from "../composables/useLibraries";
+import { librarySelectors } from "../store/slices/librarySlice";
+import { useAppSelector } from "../store";
 
 type MusicItemProps = {
   item: LibraryAndAudioInfo;
+  libraries: LibraryAndAudioInfo[];
   onSelected: React.Dispatch<React.SetStateAction<LibraryAndAudioInfo | null>>;
 };
 
-export default function MusicItem({ item, onSelected }: MusicItemProps) {
+export default function MusicItem({
+  libraries,
+  item,
+  onSelected,
+}: MusicItemProps) {
   const { audioInfo } = item;
   const { setQueue, playAudio } = usePlayer();
 
@@ -24,13 +32,13 @@ export default function MusicItem({ item, onSelected }: MusicItemProps) {
         />
         <MusicItemMenu item={item} />
         <button
-          className="absolute bottom-2 right-2 bg-green-500 p-2 rounded-full"
+          className="absolute bottom-2 right-2 bg-white p-2 rounded-full"
           onClick={() => {
-            setQueue([item]);
+            setQueue(libraries);
             playAudio(item);
           }}
         >
-          <MdPlayArrow className="text-2xl" />
+          <MdPlayArrow className="text-2xl text-black" />
         </button>
       </div>
       <div>

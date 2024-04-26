@@ -50,6 +50,7 @@ export default function LibraryPage() {
                 key={library.library.id}
                 item={library}
                 onSelected={setSelectedLibrary}
+                libraries={filteredLibraries}
               />
             ))}
           </Grid>
