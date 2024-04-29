@@ -1,6 +1,6 @@
 *Join our socials* 
 
-[Telegram]()
-[x]()
+[Telegram](https://t.me/MuseAICrypto)
+[x](https://x.com/MuseAI_Eth)
 
-Or visit our website [MuseAI]()
+Or visit our website [MuseAI](https://museai.io)
