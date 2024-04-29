@@ -26,7 +26,7 @@ const onHelp = function (ctx: TelegramContext) {
 };
 
 const onSocials = function (ctx: TelegramContext) {
-  return ctx.replyWithMarkdownV2(readFileSync("./src/bot/locales/en/socials.md"));
+  return ctx.replyWithMarkdownV2(readFileSync("./src/bot/locales/en/socials.md", "utf-8"));
 };
 
 export default function registerBot(bot: Telegraf<TelegramContext>) {
