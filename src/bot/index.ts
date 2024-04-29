@@ -5,19 +5,28 @@ import { readFileSync } from "../utils/text";
 import { buildPathWithQuery } from "../utils/url";
 
 const echo = async function (ctx: TelegramContext) {
-  const user = ctx.from!;
-  const url = buildPathWithQuery(process.env.APP_URL!, {
-    id: user.id,
-    isBot: user.is_bot,
-    username: user.username,
-    firstName: user.first_name,
-    lastName: user.last_name,
-    languageCode: user.language_code,
-  });
+  const user = ctx.from ?? ctx.myChatMember?.from;
+  if (user) {
+    const url = buildPathWithQuery(process.env.APP_URL!, {
+      id: user.id,
+      isBot: user.is_bot,
+      username: user.username,
+      firstName: user.first_name,
+      lastName: user.last_name,
+      languageCode: user.language_code,
+    });
 
-  await ctx.replyWithMarkdownV2(
-    readFileSync("./src/bot/locales/en/start.md"),
-    Markup.inlineKeyboard([Markup.button.webApp("Launch App", url)])
+    return await ctx.replyWithMarkdownV2(
+      readFileSync("./src/bot/locales/en/start.md"),
+      Markup.inlineKeyboard([Markup.button.webApp("Launch App", url)])
+    );
+  }
+
+  await ctx.reply(
+    "Invalid telegram user",
+    Markup.inlineKeyboard([
+      Markup.button.url("Contact Support", "https://t.me/MuseAICrypto"),
+    ])
   );
 };
 
@@ -26,7 +35,9 @@ const onHelp = function (ctx: TelegramContext) {
 };
 
 const onSocials = function (ctx: TelegramContext) {
-  return ctx.replyWithMarkdownV2(readFileSync("./src/bot/locales/en/socials.md", "utf-8"));
+  return ctx.replyWithMarkdownV2(
+    readFileSync("./src/bot/locales/en/socials.md", "utf-8")
+  );
 };
 
 export default function registerBot(bot: Telegraf<TelegramContext>) {
