@@ -18,7 +18,7 @@ async function generateLyricsRoute(req: FastifyRequest<{ Body: Body }>) {
 
 export const micellenousRoutes = function (fastify: FastifyInstance) {
   fastify.route({
-    url: "micellenous/lyrics",
+    url: "/micellenous/lyrics",
     method: "POST",
     preHandler: fastify.authenticate,
     handler: generateLyricsRoute,
