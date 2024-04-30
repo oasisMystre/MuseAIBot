@@ -35,6 +35,6 @@ export type CreateLibrary = {
   isInstrumental: boolean;
   title?: string;
   isCustom?: boolean;
-  tags?: string;
+  tags?: string[];
   waitAudio?: boolean;
 };
