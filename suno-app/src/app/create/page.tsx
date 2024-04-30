@@ -152,7 +152,7 @@ export default function CreatePage() {
                             ) : (
                               <>
                                 <IcRandom className="text-xl" />
-                                <span>Use a random Style</span>
+                                <span>Make random Lyrics</span>
                               </>
                             )}
                           </button>
