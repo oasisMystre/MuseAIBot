@@ -10,12 +10,11 @@ import {
 } from "drizzle-orm/pg-core";
 
 import { tokenGenerator } from "./utils/secret";
-import { string } from "zod";
 
 export const users = pgTable("users", {
   id: text("id").primaryKey(),
-  username: text("username").unique(),
-  firstName: text("first_name").notNull(),
+  username: text("username"),
+  firstName: text("first_name"),
   lastName: text("last_name"),
   lastLogin: timestamp("last_login").defaultNow().notNull(),
 });
