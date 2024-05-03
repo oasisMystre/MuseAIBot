@@ -11,6 +11,7 @@ import "./index.css";
 import HomePage from "./app/page";
 import Layout from "./components/Layout";
 import CreatePage from "./app/create/page";
+import TelegramProvider from "./providers/TelegramProvider";
 
 const container = document.getElementById("root");
 const root = createRoot(container!);
@@ -34,7 +35,8 @@ const router = createBrowserRouter([
 
 root.render(
   <React.StrictMode>
-    <h1 className="fixed top-0 text-4xl bg-red text-white p-4 z-1000">Hello On Top Of router</h1>
-    <RouterProvider router={router} />
+    <TelegramProvider>
+      <RouterProvider router={router} />
+    </TelegramProvider>
   </React.StrictMode>
 );
