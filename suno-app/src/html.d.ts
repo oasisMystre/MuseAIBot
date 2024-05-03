@@ -1,5 +1,9 @@
-declare namespace React {
-  export type PropsWithClassName = {
-    className?: string;
-  };
+import React from "react";
+
+export declare module "react" {
+  export namespace React {
+    export interface PropsWithClassName {
+      className?: string;
+    }
+  }
 }

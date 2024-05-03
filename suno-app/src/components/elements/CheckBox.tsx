@@ -1,11 +1,10 @@
 import clsx from "clsx";
-import { Field, useFormik, useFormikContext } from "formik";
+import { useFormikContext } from "formik";
 
-type CheckBoxProps = { name: string } & React.PropsWithChildren &
-  React.PropsWithClassName;
+type CheckBoxProps = { name: string } & React.PropsWithChildren;
 
-export default function CheckBox({ name, className, children }: CheckBoxProps) {
-  const { setFieldValue, values } = useFormikContext<{
+export default function CheckBox({ name, children }: CheckBoxProps) {
+  const { setFieldValue } = useFormikContext<{
     [key: string]: boolean;
   }>();
 
