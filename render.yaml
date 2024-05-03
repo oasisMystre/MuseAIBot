@@ -1,18 +1,21 @@
 services:
-   - type: web
-     name: museaibot
-     runtime: node
-     plan: starter
-     autoDeploy: true
-     buildCommand: bun install && pnpm build
-     startCommand:  pnpm serve
-     envVars:
-       - fromGroup: museaibot
-     domains:
-       - "api.museaibot.com"
+  - type: web
+    name: museaibot
+    runtime: node
+    plan: starter
+    autoDeploy: true
+    buildCommand: bun install && pnpm build
+    startCommand: pnpm serve
+    envVars:
+      - fromGroup: museaibot
+      - key: DATABASE_URL
+        fromDatabase:
+          name: museai
+          property: connectionString
+    domains:
+      - "api.museaibot.com"
 databases:
-  - name: museai 
+  - name: museai
     databaseName: museai
     user: admin
-    plan: starter 
-    
+    plan: starter
