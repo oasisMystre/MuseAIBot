@@ -33,7 +33,9 @@ export const tokens = pgTable("tokens", {
   key: text("token")
     .$defaultFn(() => tokenGenerator.generate())
     .notNull(),
-  userId: text("user_id").unique(),
+  userId: text("user_id")
+    .references(() => users.id, { onDelete: "cascade" })
+    .unique(),
 });
 
 export const tokenRelations = relations(tokens, ({ one }) => ({
