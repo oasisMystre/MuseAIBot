@@ -10,6 +10,7 @@ import PlayerProvider from "../providers/PlayerProvider";
 
 import Player from "./Player";
 import LayoutHeader from "./LayoutHeader";
+import MusicDetailProvider from "../providers/MusicDetailProvider";
 
 export default function Layout() {
   return (
@@ -18,12 +19,14 @@ export default function Layout() {
         <Provider store={store}>
           <AuthProvider>
             <PlayerProvider>
-              <LayoutHeader />
-              <div className="flex-1 flex  overflow-y-scroll">
-                <Outlet />
-                <ToastContainer />
-              </div>
-              <Player />
+              <MusicDetailProvider>
+                <LayoutHeader />
+                <div className="flex-1 flex  overflow-y-scroll">
+                  <Outlet />
+                  <ToastContainer />
+                </div>
+                <Player />
+              </MusicDetailProvider>
             </PlayerProvider>
           </AuthProvider>
         </Provider>

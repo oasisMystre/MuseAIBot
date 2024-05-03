@@ -1,20 +1,16 @@
-import { useState } from "react";
 import { useSearchParams } from "react-router-dom";
 
 import useLibraries from "../composables/useLibraries";
-import { LibraryAndAudioInfo } from "../lib/api/models";
 
 import Grid from "../components/elements/Grid";
 import MusicItem from "../components/MusicItem";
 import Search from "../components/elements/Search";
 import MusicListShim from "../components/MusicListShim";
-import MusicDetailDialog from "../components/MusicDetailDialog";
 import LibraryEmptyState from "../components/states/LibraryEmptyState";
 
 export default function LibraryPage() {
   const { loadingState, libraries } = useLibraries();
-  const [selectedLibrary, setSelectedLibrary] =
-    useState<LibraryAndAudioInfo | null>(null);
+
 
   const [searchParams] = useSearchParams();
   const search = searchParams.get("search");
@@ -49,7 +45,6 @@ export default function LibraryPage() {
               <MusicItem
                 key={library.library.id}
                 item={library}
-                onSelected={setSelectedLibrary}
                 libraries={filteredLibraries}
               />
             ))}
@@ -58,12 +53,7 @@ export default function LibraryPage() {
           <LibraryEmptyState />
         ))}
 
-      {selectedLibrary && (
-        <MusicDetailDialog
-          library={selectedLibrary}
-          onClose={() => setSelectedLibrary(null)}
-        />
-      )}
+      
     </main>
   );
 }

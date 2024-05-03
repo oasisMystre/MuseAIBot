@@ -1,25 +1,19 @@
 import { MdPlayArrow } from "react-icons/md";
 
 import usePlayer from "../composables/usePlayer";
+import useMusicDialog from "../composables/useMusicDialog";
 import { LibraryAndAudioInfo } from "../lib/api/models";
 
 import MusicItemMenu from "./MusicItemMenu";
-import useLibraries from "../composables/useLibraries";
-import { librarySelectors } from "../store/slices/librarySlice";
-import { useAppSelector } from "../store";
 
 type MusicItemProps = {
   item: LibraryAndAudioInfo;
   libraries: LibraryAndAudioInfo[];
-  onSelected: React.Dispatch<React.SetStateAction<LibraryAndAudioInfo | null>>;
 };
 
-export default function MusicItem({
-  libraries,
-  item,
-  onSelected,
-}: MusicItemProps) {
+export default function MusicItem({ libraries, item }: MusicItemProps) {
   const { audioInfo } = item;
+  const { setLibrary } = useMusicDialog();
   const { setQueue, playAudio } = usePlayer();
 
   return (
@@ -28,7 +22,7 @@ export default function MusicItem({
         <img
           src={audioInfo.image_url}
           className="w-full h-40 rounded-md sm:h-56 object-cover"
-          onClick={() => onSelected(item)}
+          onClick={() => setLibrary(item)}
         />
         <MusicItemMenu item={item} />
         <button

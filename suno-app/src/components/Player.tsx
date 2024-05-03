@@ -8,8 +8,10 @@ import {
 } from "react-icons/md";
 
 import usePlayer from "../composables/usePlayer";
+import useMusicDialog from "../composables/useMusicDialog";
 
 export default function Player() {
+  const { setLibrary } = useMusicDialog();
   const { audio, destroy, currentPlaying, next, previous, toggle, isPlaying } =
     usePlayer();
   const [seekPercentage, setSeekPercentage] = useState(0);
@@ -49,7 +51,8 @@ export default function Player() {
             <div className="flex-1 flex space-x-2 items-center">
               <img
                 src={currentPlaying.audioInfo.image_url}
-                className="w-12 h-12 bg-red rounded"
+                className="w-12 h-12 rounded"
+                onClick={() => setLibrary(currentPlaying)}
               />
               <div className="flex flex-col">
                 <p>{currentPlaying.audioInfo.title}</p>

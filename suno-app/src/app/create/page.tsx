@@ -1,27 +1,26 @@
+import clsx from "clsx";
 import { useState } from "react";
 import { toast } from "react-toastify";
 import { MdMusicNote, MdQuestionMark } from "react-icons/md";
 
 import { ErrorMessage, Field, Form, Formik } from "formik";
-import { object, string, boolean, setLocale, array } from "yup";
+import { object, string, boolean, array } from "yup";
 
+import IcRandom from "../../assets/ic_random";
 import { useAppDispatch } from "../../store";
 import { libraryActions } from "../../store/slices/librarySlice";
 
 import { useApi } from "../../composables/useApi";
-import { LibraryAndAudioInfo } from "../../lib/api/models";
+import useMusicDialog from "../../composables/useMusicDialog";
 
 import CheckBox from "../../components/elements/CheckBox";
-import MusicDetailDialog from "../../components/MusicDetailDialog";
-import IcRandom from "../../assets/ic_random";
-import clsx from "clsx";
 
 export default function CreatePage() {
   const api = useApi();
   const dispatch = useAppDispatch();
+  const { setLibrary } = useMusicDialog();
+
   const [lyricsLoading, setLyricsLoading] = useState(false);
-  const [createdLibrary, setCreatedLibrary] =
-    useState<LibraryAndAudioInfo | null>(null);
 
   const validateYupSchema = object().shape({
     isCustom: boolean(),
@@ -56,7 +55,7 @@ export default function CreatePage() {
                 api.library
                   .createLibrary(Object.assign(values, { waitAudio: true }))
                   .then(({ data }) => {
-                    setCreatedLibrary(data.at(0)!);
+                    setLibrary(data.at(0)!);
                     dispatch(libraryActions.addMany(data));
                   })
                   .catch((error) => {
@@ -72,7 +71,7 @@ export default function CreatePage() {
               );
             }}
           >
-            {({ isSubmitting, setFieldValue, values, setFieldError }) => (
+            {({ isSubmitting, setFieldValue, values }) => (
               <>
                 <header className="flex items-center">
                   <h1 className="flex-1 text-xl font-bold">Create</h1>
@@ -185,12 +184,6 @@ export default function CreatePage() {
           </Formik>
         </main>
       </main>
-      {createdLibrary && (
-        <MusicDetailDialog
-          library={createdLibrary}
-          onClose={() => setCreatedLibrary(null)}
-        />
-      )}
     </>
   );
 }
