@@ -10,7 +10,7 @@ function TelegramWrapper({ children }: React.PropsWithChildren) {
 
   useEffect(() => {
     if (!Telegram.WebApp.isExpanded) Telegram.WebApp.expand();
-  }, [Telegram]);
+  }, []);
 
   return children;
 }
