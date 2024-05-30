@@ -14,6 +14,11 @@ import { useApi } from "../../composables/useApi";
 import useMusicDialog from "../../composables/useMusicDialog";
 
 import CheckBox from "../../components/elements/CheckBox";
+import ChipInput from "../../components/elements/ChipInput";
+import { shuffleArray } from "../../lib/utils/object";
+import { genres } from "../../config/genre";
+
+let _genres = shuffleArray(genres).slice(0, 6);
 
 export default function CreatePage() {
   const api = useApi();
@@ -48,7 +53,7 @@ export default function CreatePage() {
               title: "",
               isCustom: false,
               isInstrumental: false,
-              tags: [],
+              tags: [] as string[],
             }}
             onSubmit={async (values, { setSubmitting }) => {
               await toast.promise(
@@ -160,6 +165,31 @@ export default function CreatePage() {
                       <small className="text-red-500 first-letter:capitalize">
                         <ErrorMessage name="prompt" />
                       </small>
+                    </div>
+                    <div className="flex flex-col spacey-2">
+                      <ChipInput
+                        name="tags"
+                        label="Genre"
+                        placeholder="Enter music genre"
+                      >
+                        <div className="flex space-x-2 items-center overflow-x-scroll">
+                          {_genres.map((genre) => (
+                            <button
+                              type="button"
+                              className="shrink-0 border border-white/50 rounded px-2 py-1"
+                              onClick={() => {
+                                if (!values.tags.includes(genre))
+                                  setFieldValue(
+                                    "tags",
+                                    values.tags.concat(genre)
+                                  );
+                              }}
+                            >
+                              {genre}
+                            </button>
+                          ))}
+                        </div>
+                      </ChipInput>
                     </div>
                     <CheckBox name="isInstrumental">
                       <span>Instrumental</span>

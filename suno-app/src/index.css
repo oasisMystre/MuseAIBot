@@ -18,3 +18,12 @@ input {
 .btn-outline {
   --at-apply: border-1 border-white text-white hover:bg-white/40 active:bg-white/50;
 }
+
+[contenteditable=true]:empty:before{
+  content:attr(data-placeholder);
+  --at-apply: text-white/50;
+}
+
+[contenteditable=true] {
+  --at-apply: outline-none border-none;
+}
