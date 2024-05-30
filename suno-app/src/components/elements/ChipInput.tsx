@@ -21,7 +21,7 @@ export default function ChipInput({
     <div className="flex flex-col space-y-4">
       <div className="flex flex-col space-y-2">
         <label>{label}</label>
-        <div className="flex space-x-2 flex-wrap items-center input-border input-focus !p-0">
+        <div className="flex space-x-2 flex-wrap items-center input-border focus:input-focus !p-0">
           {values[name] && (
             <div className="flex items-center space-x-2  space-y-2 p-2 flex-wrap">
               {values[name].map((value) => (
