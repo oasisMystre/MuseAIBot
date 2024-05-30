@@ -169,7 +169,7 @@ export default function CreatePage() {
                     {values.isCustom && (
                       <ChipInput
                         name="tags"
-                        label="Genre"
+                        label="Song Genre"
                         placeholder="Enter music genre"
                       >
                         <div className="flex space-x-2 items-center flex-nowrap overflow-x-scroll">
