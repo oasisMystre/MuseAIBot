@@ -48,7 +48,7 @@ export default function MusicItemMenu({
           <MdShare className="text-xl" />
           <span className="text-sm">Share</span>
         </Menu.Item>
-        <Menu.Item
+        /*<Menu.Item
           as={Link}
           to={audioInfo.audio_url}
           download={true}
@@ -56,7 +56,7 @@ export default function MusicItemMenu({
         >
           <MdDownload className="text-xl" />
           <span className="text-sm">Download</span>
-        </Menu.Item>
+        </Menu.Item>*/
         <Menu.Item
           as="div"
           className="hidden items-center space-x-2 px-2 py-4 cursor-pointer"
