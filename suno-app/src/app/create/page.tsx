@@ -94,7 +94,7 @@ export default function CreatePage() {
                         </label>
                         <Field
                           name="title"
-                          className="input-border input-focus"
+                          className="input-border focus:input-focus"
                           placeholder="Enter a title"
                         />
                         <small className="text-red-500 first-letter:capitalize">
