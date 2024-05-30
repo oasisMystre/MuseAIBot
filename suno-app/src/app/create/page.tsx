@@ -18,7 +18,7 @@ import ChipInput from "../../components/elements/ChipInput";
 import { shuffleArray } from "../../lib/utils/object";
 import { genres } from "../../config/genre";
 
-let _genres = shuffleArray(genres).slice(0, 6);
+let _genres = shuffleArray(genres).slice(0, 4);
 
 export default function CreatePage() {
   const api = useApi();
@@ -166,17 +166,17 @@ export default function CreatePage() {
                         <ErrorMessage name="prompt" />
                       </small>
                     </div>
-                    <div className="flex flex-col spacey-2">
+                    {values.isCustom && (
                       <ChipInput
                         name="tags"
                         label="Genre"
                         placeholder="Enter music genre"
                       >
-                        <div className="flex space-x-2 items-center overflow-x-scroll">
+                        <div className="flex space-x-2 items-center flex-nowrap overflow-x-scroll">
                           {_genres.map((genre) => (
                             <button
                               type="button"
-                              className="shrink-0 border border-white/50 rounded px-2 py-1"
+                              className="shrink-0 border border-white/50 rounded px-2 py-1 text-sm text-white/80"
                               onClick={() => {
                                 if (!values.tags.includes(genre))
                                   setFieldValue(
@@ -190,7 +190,7 @@ export default function CreatePage() {
                           ))}
                         </div>
                       </ChipInput>
-                    </div>
+                    )}
                     <CheckBox name="isInstrumental">
                       <span>Instrumental</span>
                     </CheckBox>
