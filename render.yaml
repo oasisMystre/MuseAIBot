@@ -4,7 +4,7 @@ services:
     runtime: node
     plan: starter
     autoDeploy: true
-    buildCommand: bun install --frozen-lockfile && bun build
+    buildCommand: bun install --frozen-lockfile && bun run build
     startCommand: bun serve
     envVars:
       - fromGroup: museaibot
