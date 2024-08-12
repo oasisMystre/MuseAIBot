@@ -5,11 +5,12 @@
     "build": "tsc",
     "serve": "node dist/src/index.js",
     "dev": "pnpm build && pnpm serve",
-    "start": "bun run src/index.ts"
+    "start": "bun run src/index.ts",
+    "migrate": "npx drizzle-kit generate && npx drizzle-kit migrate"
   },
   "devDependencies": {
     "@types/bun": "^1.0.12",
-    "drizzle-kit": "^0.20.14"
+    "drizzle-kit": "^0.22.7"
   },
   "peerDependencies": {
     "typescript": "^5.0.0"
@@ -21,7 +22,7 @@
     "axios": "^1.6.8",
     "axios-cookiejar-support": "^5.0.1",
     "dotenv": "^16.4.5",
-    "drizzle-orm": "^0.30.8",
+    "drizzle-orm": "^0.31.2",
     "drizzle-zod": "^0.5.1",
     "fastify": "^4.26.2",
     "pg-connection-string": "^2.6.4",

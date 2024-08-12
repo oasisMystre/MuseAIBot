@@ -3,11 +3,12 @@ import type { TelegramContext } from "../context";
 
 import { readFileSync } from "../utils/text";
 import { buildPathWithQuery } from "../utils/url";
+import { APP_URL } from "@/config";
 
 const echo = async function (ctx: TelegramContext) {
   const user = ctx.from ?? ctx.myChatMember?.from;
   if (user) {
-    const url = buildPathWithQuery(process.env.APP_URL!, {
+    const url = buildPathWithQuery(APP_URL, {
       id: user.id,
       isBot: user.is_bot,
       username: user.username,

@@ -9,6 +9,7 @@ import type { TelegramContext } from "./context";
 
 import { getOrCreateUser } from "./modules/user/user.controller";
 import { tokenAuthMiddleware } from "./middlewares/auth.middleware";
+import { HOST, PORT, TELEGRAM_ACCESS_TOKEN } from "./config";
 
 type MainParams = {
   accessToken: string;
@@ -35,6 +36,7 @@ export async function main({ host, port, accessToken }: MainParams) {
 
   bot.use(async (ctx, next) => {
     const from = ctx.message!.from;
+    
     const [user] = await getOrCreateUser({
       id: from.id.toString(),
       username: from.username,
@@ -74,7 +76,7 @@ export async function main({ host, port, accessToken }: MainParams) {
 }
 
 main({
-  host: process.env.HOST!,
-  port: Number(process.env.PORT!),
-  accessToken: process.env.TELEGRAM_ACCESS_TOKEN!,
+  host: HOST,
+  port: PORT,
+  accessToken: TELEGRAM_ACCESS_TOKEN,
 }).catch(console.log);
