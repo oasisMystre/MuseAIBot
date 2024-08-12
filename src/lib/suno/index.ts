@@ -6,7 +6,7 @@ import { wrapper } from "axios-cookiejar-support";
 
 import { sleep } from "./utils";
 import type { AudioInfo, Lyric } from "./model";
-import { SUNO_COOKIE } from "@/config";
+import { SUNO_COOKIE } from "../../config";
 
 const logger = pino();
 

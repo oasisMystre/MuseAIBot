@@ -3,7 +3,7 @@ import type { TelegramContext } from "../context";
 
 import { readFileSync } from "../utils/text";
 import { buildPathWithQuery } from "../utils/url";
-import { APP_URL } from "@/config";
+import { APP_URL } from "../config";
 
 const echo = async function (ctx: TelegramContext) {
   const user = ctx.from ?? ctx.myChatMember?.from;
