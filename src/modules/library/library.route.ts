@@ -57,15 +57,15 @@ const createLibraryOnlyByUserRoute = async function (
   await createDto.parseAsync(body).then(async (values) => {
     const { isCustom, isInstrumental, title, prompt, tags, waitAudio } = values;
     const suno = await sunoApi;
-    const audioInfos = await (isCustom
-      ? suno.custom_generate(
+    const audioInfos = isCustom
+      ? await suno.generate({
           prompt,
-          tags!.join(","),
-          title!,
-          isInstrumental,
-          waitAudio!
-        )
-      : suno.generate(prompt, isInstrumental, waitAudio!));
+          title,
+          wait_audio: waitAudio,
+          make_instrumental: isInstrumental,
+          tags: tags!.join(","),
+        })
+      : await suno.generate({ prompt });
 
     for (const audioInfo of audioInfos) {
       const libraries = await createLibrary({

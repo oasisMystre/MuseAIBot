@@ -1,6 +1,6 @@
 import { FastifyInstance, FastifyRequest } from "fastify";
 
-import { sunoApi } from "../../lib";
+import { sunoApi } from "../../lib/suno/v1";
 import { LyricBody } from "../dto/micellenous.dto";
 
 type Body = {
