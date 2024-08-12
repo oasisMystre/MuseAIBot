@@ -98,7 +98,7 @@ export const mapLibrariesWithAudioInfos = async function (
   if (libraries.length === 0) return [];
 
   const songIds = libraries.map(({ id }) => id);
-  const audioInfos = await suno.get(songIds);
+  const audioInfos = await suno.get(songIds.join(","));
 
   return audioInfos.map((audioInfo) => {
     const library = libraries.find((library) => library.id === audioInfo.id);
