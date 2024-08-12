@@ -4,8 +4,7 @@ services:
     runtime: node
     plan: starter
     autoDeploy: true
-    buildCommand: bun install && pnpm build
-    startCommand: pnpm serve
+    startCommand: bun start
     envVars:
       - fromGroup: museaibot
       - key: DATABASE_URL
