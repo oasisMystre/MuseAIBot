@@ -107,7 +107,9 @@ export const mapLibrariesWithAudioInfos = async function (
 };
 
 export const getUserLibrariesCountToday = async (userId: string) => {
-  const today = new Date(new Date().getDate());
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+
   return db
     .select({ count: count(libraries.userId) })
     .from(libraries)
