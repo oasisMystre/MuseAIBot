@@ -86,7 +86,7 @@ export default function CreatePage() {
               <>
                 <div className="self-center max-w-lg flex items-center bg-white text-black px-4 py-2 rounded-md">
                   <p className="flex-1 text-sm">
-                    You have {10 + user.quota} left today. To have unlimited access contact support
+                    You have {10 - user.quota} left today. To have unlimited access contact support
                   </p>
                   <button className="bg-black text-white px-4 py-2 rounded-md">
                     Upgrade
