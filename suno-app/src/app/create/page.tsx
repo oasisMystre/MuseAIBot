@@ -17,6 +17,7 @@ import CheckBox from "../../components/elements/CheckBox";
 import ChipInput from "../../components/elements/ChipInput";
 import { shuffleArray } from "../../lib/utils/object";
 import { genres } from "../../config/genre";
+import { useAuth } from "../../composables/useAuth";
 
 let _genres = shuffleArray(genres).slice(0, 4);
 
@@ -24,6 +25,7 @@ export default function CreatePage() {
   const api = useApi();
   const dispatch = useAppDispatch();
   const { setLibrary } = useMusicDialog();
+  const { user, setUser } = useAuth();
 
   const [lyricsLoading, setLyricsLoading] = useState(false);
 
@@ -62,6 +64,10 @@ export default function CreatePage() {
                   .then(({ data }) => {
                     setLibrary(data.at(0)!);
                     dispatch(libraryActions.addMany(data));
+                    setUser((user) => {
+                      user.quota -= 1;
+                      return user;
+                    });
                   })
                   .catch((error) => {
                     console.log(error);
@@ -78,6 +84,12 @@ export default function CreatePage() {
           >
             {({ isSubmitting, setFieldValue, values }) => (
               <>
+                <div className="flex flex-col items-center bg-white text-black p-4 rounded-md">
+                  <p className="flex-1">You have {user.quota} left today.</p>
+                  <button className="bg-black text-white px-4 py-2 rounded-md">
+                    Upgrade
+                  </button>
+                </div>
                 <header className="flex items-center">
                   <h1 className="flex-1 text-xl font-bold">Create</h1>
                   <CheckBox name="isCustom">

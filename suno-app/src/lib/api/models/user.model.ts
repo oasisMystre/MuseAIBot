@@ -7,6 +7,7 @@ export type User = {
   username: string;
   firstName: string;
   lastName: string;
+  quota: number;
 };
 
 export type ApiUser = {

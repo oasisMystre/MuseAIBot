@@ -8,6 +8,7 @@ import {
   getUsersSchema,
 } from "../../schema";
 import { getTokenByUserId } from "../token/token.controller";
+import { getUserLibrariesCountToday } from "../library/library.controller";
 
 async function upsertUserRoute(
   req: FastifyRequest<{ Body: z.infer<typeof insertUsersSchema> }>
@@ -20,9 +21,13 @@ async function upsertUserRoute(
   const [token] = await getTokenByUserId({
     userId: user.id,
   });
+  const quota = await getUserLibrariesCountToday(user.id);
 
   return {
-    user,
+    user: {
+      ...user,
+      quota,
+    },
     token,
   };
 }

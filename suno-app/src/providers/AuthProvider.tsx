@@ -9,7 +9,11 @@ import Protected from "../components/Protected";
 import { LoadingState } from "../store/types";
 import { arrayToRecord } from "../lib/utils/object";
 
-export const AuthContext = createContext<Partial<ApiUser>>({
+export type AuthContext = ApiUser & {
+  setUser: React.Dispatch<React.SetStateAction<ApiUser["user"]>>;
+};
+
+export const AuthContext = createContext<Partial<AuthContext>>({
   user: undefined,
   token: undefined,
 });
@@ -38,7 +42,18 @@ export default function AuthProvider({ children }: React.PropsWithChildren) {
 
   return loadingState === "success" ? (
     apiUser && (
-      <AuthContext.Provider value={apiUser}>
+      <AuthContext.Provider
+        value={{
+          ...apiUser,
+          setUser: (value) =>
+            setApiUser((apiUser) => {
+              if (apiUser)
+                apiUser.user =
+                  typeof value === "function" ? value(apiUser.user) : value;
+              return apiUser;
+            }),
+        }}
+      >
         <ApiProvider>{children}</ApiProvider>
       </AuthContext.Provider>
     )

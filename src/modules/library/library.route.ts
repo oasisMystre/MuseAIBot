@@ -1,5 +1,5 @@
 import type { z } from "zod";
-import type { FastifyInstance, FastifyRequest } from "fastify";
+import type { FastifyInstance, FastifyReply, FastifyRequest } from "fastify";
 
 import { sunoApi } from "../../lib";
 import { getLibrariesSchema, insertLibrariesSchema } from "../../schema";
@@ -8,6 +8,7 @@ import {
   deleteLibraryOnlyByUser,
   getLibraries,
   getLibrariesOnlyByUser,
+  getUserLibrariesCountToday,
   mapLibrariesWithAudioInfos,
   updateLibrary,
 } from "./library.controller";
@@ -49,8 +50,15 @@ export const getLibrariesRoute = async function (
 };
 
 const createLibraryOnlyByUserRoute = async function (
-  req: FastifyRequest<{ Body: z.infer<typeof createDto> }>
+  req: FastifyRequest<{ Body: z.infer<typeof createDto> }>,
+  reply: FastifyReply
 ) {
+  const [library] = await getUserLibrariesCountToday(req.user!.id);
+  if (library.count > 10)
+    return reply
+      .status(403)
+      .send({ message: "User has used up todays quota of 10 songs" });
+
   const body = req.body;
   const data: any[] = [];
 

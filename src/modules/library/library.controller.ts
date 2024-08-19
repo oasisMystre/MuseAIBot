@@ -1,5 +1,5 @@
 import type { z } from "zod";
-import { and, count, desc, eq, sql } from "drizzle-orm";
+import { and, count, desc, eq, gte, lte, sql } from "drizzle-orm";
 
 import { db } from "../../db";
 import { sunoApi } from "../../lib";
@@ -104,4 +104,12 @@ export const mapLibrariesWithAudioInfos = async function (
     const library = libraries.find((library) => library.id === audioInfo.id);
     return { audioInfo, library };
   });
+};
+
+export const getUserLibrariesCountToday = async (userId: string) => {
+  const today = new Date(new Date().getDate());
+  return db
+    .select({ count: count(libraries.userId) })
+    .from(libraries)
+    .where(and(eq(libraries.userId, userId), gte(libraries.createdAt, today)));
 };
