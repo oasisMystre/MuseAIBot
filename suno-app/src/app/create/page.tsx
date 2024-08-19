@@ -65,7 +65,7 @@ export default function CreatePage() {
                     setLibrary(data.at(0)!);
                     dispatch(libraryActions.addMany(data));
                     setUser((user) => {
-                      user.quota -= 1;
+                      user.quota = 10 - (user.quota + 1);
                       return user;
                     });
                   })
@@ -84,8 +84,10 @@ export default function CreatePage() {
           >
             {({ isSubmitting, setFieldValue, values }) => (
               <>
-                <div className="flex flex-col items-center bg-white text-black p-4 rounded-md">
-                  <p className="flex-1">You have {user.quota} left today.</p>
+                <div className="self-center max-w-lg flex items-center bg-white text-black px-4 py-2 rounded-md">
+                  <p className="flex-1 text-sm">
+                    You have {10 + user.quota} left today. To have unlimited access contact support
+                  </p>
                   <button className="bg-black text-white px-4 py-2 rounded-md">
                     Upgrade
                   </button>

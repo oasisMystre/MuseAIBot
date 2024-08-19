@@ -21,12 +21,12 @@ async function upsertUserRoute(
   const [token] = await getTokenByUserId({
     userId: user.id,
   });
-  const quota = await getUserLibrariesCountToday(user.id);
+  const [userCount] = await getUserLibrariesCountToday(user.id);
 
   return {
     user: {
       ...user,
-      quota,
+      quota: userCount.count,
     },
     token,
   };
