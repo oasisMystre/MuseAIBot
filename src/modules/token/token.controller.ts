@@ -1,11 +1,11 @@
-import type { z } from "zod";
+
 import { eq } from "drizzle-orm";
 
 import { db } from "../../db";
 import { getTokensSchema, insertTokensSchema, tokens } from "../../schema";
 
 export const getTokenByKey = async function (
-  values: z.infer<typeof getTokensSchema>
+  values: Zod.infer<typeof getTokensSchema>
 ) {
   return db.query.tokens.findFirst({
     where: eq(tokens.key, values.key),
@@ -16,7 +16,7 @@ export const getTokenByKey = async function (
 };
 
 export const getTokenByUserId = async function (
-  values: z.infer<typeof insertTokensSchema>
+  values: Zod.infer<typeof insertTokensSchema>
 ) {
   return db
     .insert(tokens)

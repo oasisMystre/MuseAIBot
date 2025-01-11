@@ -1,8 +1,10 @@
-import type { z } from "zod";
 import type { FastifyInstance, FastifyReply, FastifyRequest } from "fastify";
 
-import { sunoApi } from "../../lib";
-import { getLibrariesSchema, insertLibrariesSchema } from "../../schema";
+import { suno } from "../../lib";
+import { paginateSchema } from "../dto/paginate.dto";
+import type {  AudioInfo } from "../../lib/suno/model";
+import { getLibrariesSchema, insertLibrariesSchema, selectLibrariesSchema } from "../../schema";
+
 import {
   createLibrary,
   deleteLibraryOnlyByUser,
@@ -12,10 +14,9 @@ import {
   updateLibrary,
 } from "./library.controller";
 import { createDto } from "./dto/create.dto";
-import { paginateSchema } from "../dto/paginate.dto";
 
 const getLibrariesOnlyByUserRoute = async function (
-  req: FastifyRequest<{ Querystring: z.infer<typeof paginateSchema> }>
+  req: FastifyRequest<{ Querystring: Zod.infer<typeof paginateSchema> }>
 ) {
   const { offset, limit } = await paginateSchema.parseAsync(req.query);
 
@@ -35,7 +36,7 @@ const getLibrariesOnlyByUserRoute = async function (
 };
 
 export const getLibrariesRoute = async function (
-  req: FastifyRequest<{ Querystring: z.infer<typeof paginateSchema> }>
+  req: FastifyRequest<{ Querystring: Zod.infer<typeof paginateSchema> }>
 ) {
   const { offset, limit } = await paginateSchema.parseAsync(req.query);
 
@@ -49,21 +50,15 @@ export const getLibrariesRoute = async function (
 };
 
 const createLibraryOnlyByUserRoute = async function (
-  req: FastifyRequest<{ Body: z.infer<typeof createDto> }>,
+  req: FastifyRequest<{ Body: Zod.infer<typeof createDto> }>,
   reply: FastifyReply
 ) {
-  // const [library] = await getUserLibrariesCountToday(req.user!.id);
-  // if (library.count > 10)
-  //   return reply
-  //     .status(403)
-  //     .send({ message: "User has used up todays quota of 10 songs" });
-
   const body = req.body;
-  const data: any[] = [];
+  const data: {library: Zod.infer<typeof selectLibrariesSchema>, audioInfo: AudioInfo}[] = [];
 
   await createDto.parseAsync(body).then(async (values) => {
     const { isCustom, isInstrumental, title, prompt, tags, waitAudio } = values;
-    const suno = await sunoApi;
+
     const audioInfos = isCustom
       ? await suno.generate({
           prompt,
@@ -96,8 +91,8 @@ const createLibraryOnlyByUserRoute = async function (
 
 const updateLibraryOnlyByUserRoute = async function (
   req: FastifyRequest<{
-    Params: z.infer<typeof getLibrariesSchema>;
-    Body: Partial<z.infer<typeof insertLibrariesSchema>>;
+    Params: Zod.infer<typeof getLibrariesSchema>;
+    Body: Partial<Zod.infer<typeof insertLibrariesSchema>>;
   }>
 ) {
   const params = req.params;
@@ -113,7 +108,7 @@ const updateLibraryOnlyByUserRoute = async function (
 };
 
 const deleteLibrariesOnlyByUserRoute = async function (
-  req: FastifyRequest<{ Params: z.infer<typeof getLibrariesSchema> }>
+  req: FastifyRequest<{ Params: Zod.infer<typeof getLibrariesSchema> }>
 ) {
   const params = req.params;
 

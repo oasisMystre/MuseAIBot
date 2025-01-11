@@ -1,8 +1,8 @@
-import type { z } from "zod";
+
 import { and, count, desc, eq, gte, lte, sql } from "drizzle-orm";
 
 import { db } from "../../db";
-import { sunoApi } from "../../lib";
+import { suno } from "../../lib";
 import {
   getByUserIdLibrariesSchema,
   getLibrariesSchema,
@@ -25,7 +25,7 @@ export const getLibraries = function (offset = 0, limit = 24) {
 };
 
 export const getLibrariesOnlyByUser = function (
-  values: z.infer<typeof getByUserIdLibrariesSchema>,
+  values: Zod.infer<typeof getByUserIdLibrariesSchema>,
   offset = 0,
   limit = 24
 ) {
@@ -44,7 +44,7 @@ export const getLibrariesOnlyByUser = function (
 };
 
 export const getLibraryOnlyByUser = function (
-  values: z.infer<typeof selectLibrariesSchema>
+  values: Zod.infer<typeof selectLibrariesSchema>
 ) {
   return db.query.libraries
     .findFirst({
@@ -61,14 +61,14 @@ export const getLibraryOnlyByUser = function (
 };
 
 export const createLibrary = function (
-  values: z.infer<typeof insertLibrariesSchema>
+  values: Zod.infer<typeof insertLibrariesSchema>
 ) {
   return db.insert(libraries).values(values).returning().execute();
 };
 
 export const updateLibrary = function (
-  selector: z.infer<typeof getLibrariesSchema>,
-  values: Partial<z.infer<typeof insertLibrariesSchema>>
+  selector: Zod.infer<typeof getLibrariesSchema>,
+  values: Partial<Zod.infer<typeof insertLibrariesSchema>>
 ) {
   return db
     .update(libraries)
@@ -79,7 +79,7 @@ export const updateLibrary = function (
 };
 
 export const deleteLibraryOnlyByUser = function (
-  values: z.infer<typeof selectLibrariesSchema>
+  values: Zod.infer<typeof selectLibrariesSchema>
 ) {
   return db
     .delete(libraries)
@@ -93,7 +93,6 @@ export const deleteLibraryOnlyByUser = function (
 export const mapLibrariesWithAudioInfos = async function (
   libraries: Awaited<ReturnType<typeof getLibrariesOnlyByUser>>
 ) {
-  const suno = await sunoApi;
 
   if (libraries.length === 0) return [];
 

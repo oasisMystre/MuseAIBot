@@ -1,5 +1,5 @@
-import axios, { AxiosInstance } from "axios";
-import { AudioInfo } from "./model";
+import axios, {type AxiosInstance } from "axios";
+import type { AudioInfo } from "./model";
 
 type GenerateArgs = {
   tags?: string | null;
