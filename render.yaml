@@ -4,7 +4,7 @@ services:
     runtime: node
     plan: starter
     autoDeploy: true
-    buildCommand: bun install --frozen-lockfile && bun run build
+    buildCommand: bun install --frozen-lockfile && bun run build && bun run migrate
     startCommand: bun serve
     envVars:
       - fromGroup: museaibot
@@ -13,7 +13,7 @@ services:
           name: museai
           property: connectionString
       - key: APP_URL
-        value: bot.museai.grambot.fun
+        value: https://bot.museai.grambot.fun
     domains:
       - "v1.api.museai.grambot.fun"
   - type: web
@@ -27,7 +27,7 @@ services:
       - key: VITE_APP_API_BASE_URL
         value: v1.api.museai.grambot.fun
     domains:
-      - bot.museai.grambot.fun
+      - https://bot.museai.grambot.fun
 databases:
   - name: museai
     databaseName: museai
