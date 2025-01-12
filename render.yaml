@@ -12,8 +12,22 @@ services:
         fromDatabase:
           name: museai
           property: connectionString
+      - key: APP_URL
+        value: bot.museai.grambot.fun
     domains:
-      - "api.museaibot.com"
+      - "v1.api.museai.grambot.fun"
+  - type: web
+    name: museai
+    runtime: static
+    autoDeploy: true
+    buildCommand: cd suno-app && bun install --frozen-lockfile && bun run build
+    staticPublishPath: suno-app/dist
+    envVars:
+      - fromGroup: museai
+      - key: VITE_APP_API_BASE_URL
+        value: v1.api.museai.grambot.fun
+    domains:
+      - bot.museai.grambot.fun
 databases:
   - name: museai
     databaseName: museai
