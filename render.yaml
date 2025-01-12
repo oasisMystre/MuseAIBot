@@ -25,9 +25,9 @@ services:
     envVars:
       - fromGroup: museai
       - key: VITE_APP_API_BASE_URL
-        value: v1.api.museai.grambot.fun
+        value: https://v1.api.museai.grambot.fun
     domains:
-      - https://bot.museai.grambot.fun
+      - bot.museai.grambot.fun
 databases:
   - name: museai
     databaseName: museai
