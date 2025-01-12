@@ -2,7 +2,7 @@ import type { FastifyInstance } from "fastify";
 
 import { userRoutes } from "./user/user.route";
 import { libraryRoutes } from "./library/library.route";
-import { micellenousRoutes } from "./micellenous/micellenous.controller";
+import { micellenousRoutes } from "./micellenous/micellenous.route";
 
 export function registerRoutes(fastify: FastifyInstance) {
   userRoutes(fastify);

@@ -1,10 +1,10 @@
 {
-  "id": "7d5b73db-0bbb-40f4-800d-fcf9f7642cb8",
+  "id": "57c753e5-7b78-4089-8f01-e6c5a9df9679",
   "prevId": "00000000-0000-0000-0000-000000000000",
-  "version": "5",
-  "dialect": "pg",
+  "version": "7",
+  "dialect": "postgresql",
   "tables": {
-    "libraries": {
+    "public.libraries": {
       "name": "libraries",
       "schema": "",
       "columns": {
@@ -47,6 +47,20 @@
           "primaryKey": false,
           "notNull": true
         },
+        "status": {
+          "name": "status",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'text'"
+        },
+        "data": {
+          "name": "data",
+          "type": "json",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'[]'::json"
+        },
         "user_id": {
           "name": "user_id",
           "type": "text",
@@ -73,7 +87,7 @@
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
-    "tokens": {
+    "public.tokens": {
       "name": "tokens",
       "schema": "",
       "columns": {
@@ -123,7 +137,7 @@
         }
       }
     },
-    "users": {
+    "public.users": {
       "name": "users",
       "schema": "",
       "columns": {

@@ -1,5 +1,5 @@
-import { createContext, useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
+import { createContext, useEffect, useState } from "react";
 
 import { Api } from "../lib/api";
 import type { ApiUser, User } from "../lib/api/models";

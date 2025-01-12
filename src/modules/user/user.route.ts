@@ -1,17 +1,17 @@
-
 import type { FastifyInstance, FastifyRequest } from "fastify";
 
-import { deleteUser, getOrCreateUser } from "./user.controller";
 import {
   insertUsersSchema,
   selectUsersSchema,
   getUsersSchema,
 } from "../../schema";
 import { getTokenByUserId } from "../token/token.controller";
-import { getUserLibrariesCountToday } from "../library/library.controller";
+
+import { deleteUser, getOrCreateUser } from "./user.controller";
+
 
 async function upsertUserRoute(
-  req: FastifyRequest<{ Body: Zod.infer<typeof insertUsersSchema> }>
+  req: FastifyRequest<{ Body: Zod.infer<typeof insertUsersSchema> }>,
 ) {
   const body = req.body;
   body.id = body.id.toString();
@@ -21,19 +21,17 @@ async function upsertUserRoute(
   const [token] = await getTokenByUserId({
     userId: user.id,
   });
-  const [userCount] = await getUserLibrariesCountToday(user.id);
 
   return {
     user: {
       ...user,
-      quota: userCount.count,
     },
     token,
   };
 }
 
 async function deleteUserRoute(
-  req: FastifyRequest<{ Params: Zod.infer<typeof selectUsersSchema> }>
+  req: FastifyRequest<{ Params: Zod.infer<typeof selectUsersSchema> }>,
 ) {
   const params = req.params;
   const values = await getUsersSchema.parseAsync(params);
@@ -45,7 +43,7 @@ export function userRoutes(fastify: FastifyInstance) {
     method: "POST",
     url: "/users/upsert/",
     handler: (
-      req: FastifyRequest<{ Body: Zod.infer<typeof insertUsersSchema> }>
+      req: FastifyRequest<{ Body: Zod.infer<typeof insertUsersSchema> }>,
     ) => upsertUserRoute(req),
   });
 
@@ -54,7 +52,7 @@ export function userRoutes(fastify: FastifyInstance) {
     url: "/users/:id/",
     preHandler: fastify.authenticate,
     handler: (
-      req: FastifyRequest<{ Params: Zod.infer<typeof selectUsersSchema> }>
+      req: FastifyRequest<{ Params: Zod.infer<typeof selectUsersSchema> }>,
     ) => deleteUserRoute(req),
   });
 }

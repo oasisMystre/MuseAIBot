@@ -1,4 +1,5 @@
 import { relations } from "drizzle-orm";
+import { array, number, object, string } from "zod";
 import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 import {
   pgTable,
@@ -7,9 +8,11 @@ import {
   serial,
   integer,
   uuid,
+  json,
 } from "drizzle-orm/pg-core";
 
 import { tokenGenerator } from "./utils/secret";
+import { type Audio } from "./lib/suno/models/audio.model";
 
 export const users = pgTable("users", {
   id: text("id").primaryKey(),
@@ -61,6 +64,13 @@ export const libraries = pgTable("libraries", {
   createdAt: timestamp("created_at").defaultNow(),
   plays: integer("plays").default(0).notNull(),
   likes: integer("likes").array().notNull(),
+  status: text("status", { enum: ["text", "first", "complete"] })
+    .default("text")
+    .notNull(),
+  data: json("data")
+    .default([])
+    .$type<Audio["data"]["response"]["sunoData"]>()
+    .notNull(),
   userId: text("user_id")
     .notNull()
     .references(() => users.id, { onDelete: "cascade" }),
@@ -77,7 +87,24 @@ export const selectLibrariesSchema = createSelectSchema(libraries).pick({
   id: true,
   userId: true,
 });
-export const insertLibrariesSchema = createInsertSchema(libraries);
+export const insertLibrariesSchema = createInsertSchema(libraries, {
+  data: array(
+    object({
+      id: string(),
+      audioUrl: string(),
+      sourceAudioUrl: string(),
+      streamAudioUrl: string(),
+      sourceStreamAudioUrl: string(),
+      imageUrl: string(),
+      prompt: string(),
+      modelName: string(),
+      title: string(),
+      tags: string(),
+      createTime: string(),
+      duration: number(),
+    }),
+  ),
+});
 export const getLibrariesSchema = selectLibrariesSchema.pick({
   id: true,
 });

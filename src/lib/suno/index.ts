@@ -1,4 +1,32 @@
-import { SunoApi } from "./v2";
-import { SUNO_API_KEY } from "../../config";
+import axios, { AxiosInstance } from "axios";
+import { GenerateApi } from "./generate.api";
 
-export const suno = new SunoApi(SUNO_API_KEY);
+export class Suno {
+  private readonly axios: AxiosInstance;
+  readonly generate: GenerateApi;
+
+  constructor(apiKey: string = process.env.SUNO_API_KEY!) {
+    this.axios = axios.create({
+      baseURL: "https://apibox.erweima.ai",
+      headers: {
+        Authorization: "Bearer " + apiKey,
+      },
+    });
+    
+    this.axios.interceptors.request.use((request) => {
+      console.log(request.url);
+      return request;
+    })
+
+    this.generate = new GenerateApi(this.axios);
+  }
+
+  private static suno: Suno;
+
+  static readonly instance = (() => {
+    if (this.suno) return this.suno;
+    this.suno = new Suno();
+
+    return this.suno;
+  })();
+}

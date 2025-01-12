@@ -1,22 +1,20 @@
 import type { FastifyInstance, FastifyReply, FastifyRequest } from "fastify";
 
-import { suno } from "../../lib";
+import { Suno } from "../../lib";
 import { paginateSchema } from "../dto/paginate.dto";
-import type {  AudioInfo } from "../../lib/suno/model";
-import { getLibrariesSchema, insertLibrariesSchema, selectLibrariesSchema } from "../../schema";
+import { getLibrariesSchema, insertLibrariesSchema } from "../../schema";
 
 import {
   createLibrary,
   deleteLibraryOnlyByUser,
   getLibraries,
   getLibrariesOnlyByUser,
-  mapLibrariesWithAudioInfos,
-  updateLibrary,
+  updateLibraryById,
 } from "./library.controller";
 import { createDto } from "./dto/create.dto";
 
 const getLibrariesOnlyByUserRoute = async function (
-  req: FastifyRequest<{ Querystring: Zod.infer<typeof paginateSchema> }>
+  req: FastifyRequest<{ Querystring: Zod.infer<typeof paginateSchema> }>,
 ) {
   const { offset, limit } = await paginateSchema.parseAsync(req.query);
 
@@ -25,18 +23,18 @@ const getLibrariesOnlyByUserRoute = async function (
       userId: req.user.id,
     },
     offset,
-    limit
+    limit,
   );
 
   return {
     offset,
     limit,
-    results: await mapLibrariesWithAudioInfos(libraries),
+    results: libraries,
   };
 };
 
 export const getLibrariesRoute = async function (
-  req: FastifyRequest<{ Querystring: Zod.infer<typeof paginateSchema> }>
+  req: FastifyRequest<{ Querystring: Zod.infer<typeof paginateSchema> }>,
 ) {
   const { offset, limit } = await paginateSchema.parseAsync(req.query);
 
@@ -45,55 +43,50 @@ export const getLibrariesRoute = async function (
   return {
     offset,
     limit,
-    results: await mapLibrariesWithAudioInfos(libraries),
+    results: libraries,
   };
 };
 
 const createLibraryOnlyByUserRoute = async function (
   req: FastifyRequest<{ Body: Zod.infer<typeof createDto> }>,
-  reply: FastifyReply
+  reply: FastifyReply,
 ) {
   const body = req.body;
-  const data: {library: Zod.infer<typeof selectLibrariesSchema>, audioInfo: AudioInfo}[] = [];
 
-  await createDto.parseAsync(body).then(async (values) => {
-    const { isCustom, isInstrumental, title, prompt, tags, waitAudio } = values;
+  return createDto.parseAsync(body).then(async (values) => {
+    const { isCustom, instrumental, title, prompt, tags } = values;
 
-    const audioInfos = isCustom
-      ? await suno.generate({
+    const {
+      data: {
+        data: { taskId },
+      },
+    } = isCustom
+      ? await Suno.instance.generate.generate({
           prompt,
           title,
-          wait_audio: waitAudio,
-          make_instrumental: isInstrumental,
-          tags: tags!.join(","),
+          instrumental,
+          style: tags?.join(""),
+          callBackUrl:
+            process.env.RENDER_EXTERNAL_URL + "/micellenous/webhook/suno/",
         })
-      : await suno.generate({ prompt });
+      : await Suno.instance.generate.generate({ prompt, instrumental });
 
-    for (const audioInfo of audioInfos) {
-      const libraries = await createLibrary({
-        title: audioInfo.title ?? title,
-        id: audioInfo.id,
-        likes: [],
-        userId: req.user.id,
-      });
+    const [library] = await createLibrary({
+      title,
+      likes: [],
+      id: taskId,
+      userId: req.user.id,
+    });
 
-      data.push(
-        ...libraries.map((library) => ({
-          library,
-          audioInfo,
-        }))
-      );
-    }
+    return library;
   });
-
-  return data;
 };
 
 const updateLibraryOnlyByUserRoute = async function (
   req: FastifyRequest<{
     Params: Zod.infer<typeof getLibrariesSchema>;
     Body: Partial<Zod.infer<typeof insertLibrariesSchema>>;
-  }>
+  }>,
 ) {
   const params = req.params;
   const body = req.body;
@@ -103,12 +96,15 @@ const updateLibraryOnlyByUserRoute = async function (
     .partial()
     .parseAsync(body)
     .then((values) =>
-      updateLibrary(params, Object.assign(values, { userId: req.user.id }))
+      updateLibraryById(
+        params.id,
+        Object.assign(values, { userId: req.user.id }),
+      ),
     );
 };
 
 const deleteLibrariesOnlyByUserRoute = async function (
-  req: FastifyRequest<{ Params: Zod.infer<typeof getLibrariesSchema> }>
+  req: FastifyRequest<{ Params: Zod.infer<typeof getLibrariesSchema> }>,
 ) {
   const params = req.params;
 
@@ -116,7 +112,7 @@ const deleteLibrariesOnlyByUserRoute = async function (
     deleteLibraryOnlyByUser({
       ...values,
       userId: req.user.id,
-    })
+    }),
   );
 };
 

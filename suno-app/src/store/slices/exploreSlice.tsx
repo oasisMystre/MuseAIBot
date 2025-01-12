@@ -5,7 +5,7 @@ import {
   } from "@reduxjs/toolkit";
   
   import { Api } from "../../lib/api";
-  import type { LibraryAndAudioInfo } from "../../lib/api/models";
+  import type { Library } from "../../lib/api/models";
   
   import type { LoadingState } from "../types";
   
@@ -14,7 +14,7 @@ import {
     (api: Api) => api.library.getLibraries()
   );
   const exploreAdapter = createEntityAdapter({
-    selectId: (model: LibraryAndAudioInfo) => model.library.id,
+    selectId: (model: Library) => model.id,
   });
   
   export const exploreSlice = createSlice({
@@ -41,6 +41,6 @@ import {
   });
   
   export const exploreReducer = exploreSlice.reducer;
-  export const exploreSelectors = exploreAdapter.getSelectors();
   export const exploreActions = exploreSlice.actions;
+  export const exploreSelectors = exploreAdapter.getSelectors();
   

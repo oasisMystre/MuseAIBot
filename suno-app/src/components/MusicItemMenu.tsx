@@ -1,23 +1,20 @@
 import { Menu } from "@headlessui/react";
 
 import { toast } from "react-toastify";
-import { Link } from "react-router-dom";
-import { MdMoreVert, MdShare, MdDownload, MdDelete } from "react-icons/md";
+import { MdMoreVert, MdShare, MdDelete } from "react-icons/md";
 
 import { urlToFile } from "../lib/utils/file";
-import { LibraryAndAudioInfo } from "../lib/api/models";
+import { Audio } from "../lib/api/models";
 
 type MusicItemMenuProps = {
-  item: LibraryAndAudioInfo; 
+  item: Audio;
 };
 
-export default function MusicItemMenu({
-  item: { audioInfo },
-}: MusicItemMenuProps) {
+export default function MusicItemMenu({ item }: MusicItemMenuProps) {
   const onShare = async () => {
     if (!("navigator" in window) || !navigator.share) return Promise.reject();
 
-    const file = await urlToFile(audioInfo.audio_url, audioInfo.title);
+    const file = await urlToFile(item.audioUrl, item.title);
     const shareData = {
       files: [file],
     } satisfies ShareData;
@@ -48,15 +45,6 @@ export default function MusicItemMenu({
           <MdShare className="text-xl" />
           <span className="text-sm">Share</span>
         </Menu.Item>
-        /*<Menu.Item
-          as={Link}
-          to={audioInfo.audio_url}
-          download={true}
-          className="flex items-center space-x-2 px-2 py-4 cursor-pointer"
-        >
-          <MdDownload className="text-xl" />
-          <span className="text-sm">Download</span>
-        </Menu.Item>*/
         <Menu.Item
           as="div"
           className="hidden items-center space-x-2 px-2 py-4 cursor-pointer"

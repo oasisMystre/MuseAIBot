@@ -1,8 +1,6 @@
-
 import { and, count, desc, eq, gte, lte, sql } from "drizzle-orm";
 
 import { db } from "../../db";
-import { suno } from "../../lib";
 import {
   getByUserIdLibrariesSchema,
   getLibrariesSchema,
@@ -24,10 +22,20 @@ export const getLibraries = function (offset = 0, limit = 24) {
     .execute();
 };
 
+export const getLibraryById = function (
+  id: Zod.infer<typeof selectLibrariesSchema>["id"],
+) {
+  return db.query.libraries
+    .findFirst({
+      where: eq(libraries.id, id),
+    })
+    .execute();
+};
+
 export const getLibrariesOnlyByUser = function (
   values: Zod.infer<typeof getByUserIdLibrariesSchema>,
   offset = 0,
-  limit = 24
+  limit = 24,
 ) {
   return db.query.libraries
     .findMany({
@@ -44,14 +52,14 @@ export const getLibrariesOnlyByUser = function (
 };
 
 export const getLibraryOnlyByUser = function (
-  values: Zod.infer<typeof selectLibrariesSchema>
+  values: Zod.infer<typeof selectLibrariesSchema>,
 ) {
   return db.query.libraries
     .findFirst({
       columns: { likes: false },
       where: and(
         eq(libraries.id, values.id),
-        eq(libraries.userId, values.userId)
+        eq(libraries.userId, values.userId),
       ),
       extras: {
         likes: count(libraries.likes).as("likes"),
@@ -61,56 +69,31 @@ export const getLibraryOnlyByUser = function (
 };
 
 export const createLibrary = function (
-  values: Zod.infer<typeof insertLibrariesSchema>
+  values: Zod.infer<typeof insertLibrariesSchema>,
 ) {
   return db.insert(libraries).values(values).returning().execute();
 };
 
-export const updateLibrary = function (
-  selector: Zod.infer<typeof getLibrariesSchema>,
-  values: Partial<Zod.infer<typeof insertLibrariesSchema>>
+export const updateLibraryById = function (
+  id: Zod.infer<typeof getLibrariesSchema>['id'],
+  values: Partial<Zod.infer<typeof insertLibrariesSchema>>,
 ) {
   return db
     .update(libraries)
     .set(values)
-    .where(eq(libraries.id, selector.id))
+    .where(eq(libraries.id, id))
     .returning()
     .execute();
 };
 
 export const deleteLibraryOnlyByUser = function (
-  values: Zod.infer<typeof selectLibrariesSchema>
+  values: Zod.infer<typeof selectLibrariesSchema>,
 ) {
   return db
     .delete(libraries)
     .where(
-      and(eq(libraries.id, values.id), eq(libraries.userId, values.userId))
+      and(eq(libraries.id, values.id), eq(libraries.userId, values.userId)),
     )
     .returning()
     .execute();
-};
-
-export const mapLibrariesWithAudioInfos = async function (
-  libraries: Awaited<ReturnType<typeof getLibrariesOnlyByUser>>
-) {
-
-  if (libraries.length === 0) return [];
-
-  const songIds = libraries.map(({ id }) => id);
-  const audioInfos = await suno.get(songIds.join(","));
-
-  return audioInfos.map((audioInfo) => {
-    const library = libraries.find((library) => library.id === audioInfo.id);
-    return { audioInfo, library };
-  });
-};
-
-export const getUserLibrariesCountToday = async (userId: string) => {
-  const today = new Date();
-  today.setHours(0, 0, 0, 0);
-
-  return db
-    .select({ count: count(libraries.userId) })
-    .from(libraries)
-    .where(and(eq(libraries.userId, userId), gte(libraries.createdAt, today)));
 };

@@ -3,10 +3,13 @@ import { useState } from "react";
 import { toast } from "react-toastify";
 import { MdMusicNote, MdQuestionMark } from "react-icons/md";
 
-import { ErrorMessage, Field, Form, Formik } from "formik";
 import { object, string, boolean, array } from "yup";
+import { ErrorMessage, Field, Form, Formik } from "formik";
 
+import { genres } from "../../config/genre";
 import IcRandom from "../../assets/ic_random";
+import { shuffleArray } from "../../lib/utils/object";
+
 import { useAppDispatch } from "../../store";
 import { libraryActions } from "../../store/slices/librarySlice";
 
@@ -15,9 +18,6 @@ import useMusicDialog from "../../composables/useMusicDialog";
 
 import CheckBox from "../../components/elements/CheckBox";
 import ChipInput from "../../components/elements/ChipInput";
-import { shuffleArray } from "../../lib/utils/object";
-import { genres } from "../../config/genre";
-import { useAuth } from "../../composables/useAuth";
 
 let _genres = shuffleArray(genres).slice(0, 4);
 
@@ -25,7 +25,6 @@ export default function CreatePage() {
   const api = useApi();
   const dispatch = useAppDispatch();
   const { setLibrary } = useMusicDialog();
-  const { user, setUser } = useAuth();
 
   const [lyricsLoading, setLyricsLoading] = useState(false);
 
@@ -54,20 +53,18 @@ export default function CreatePage() {
               prompt: "",
               title: "",
               isCustom: false,
-              isInstrumental: false,
+              instrumental: false,
               tags: [] as string[],
             }}
             onSubmit={async (values, { setSubmitting }) => {
               await toast.promise(
                 api.library
-                  .createLibrary(Object.assign(values, { waitAudio: true }))
-                  .then(({ data }) => {
-                    setLibrary(data.at(0)!);
-                    dispatch(libraryActions.addMany(data));
-                    setUser((user) => {
-                      user.quota = 10 - (user.quota + 1);
-                      return user;
-                    });
+                  .createAndWaitForLibrary(values, (data) => {
+                    setLibrary(data);
+                  })
+                  .then((data) => {
+                    setLibrary(data);
+                    dispatch(libraryActions.addMany([data]));
                   })
                   .catch((error) => {
                     console.log(error);
@@ -78,20 +75,12 @@ export default function CreatePage() {
                   pending: "Generating music, please wait a moment.",
                   success: "Music generated succesfully.",
                   error: "Unable to process music generation.",
-                }
+                },
               );
             }}
           >
             {({ isSubmitting, setFieldValue, values }) => (
               <>
-                {/* <div className="self-center max-w-lg flex items-center bg-white text-black px-4 py-2 rounded-md">
-                  <p className="flex-1 text-sm">
-                    You have {10 - user.quota} left today. To have unlimited access contact support
-                  </p>
-                  <button className="bg-black text-white px-4 py-2 rounded-md">
-                    Upgrade
-                  </button>
-                </div> */}
                 <header className="flex items-center">
                   <h1 className="flex-1 text-xl font-bold">Create</h1>
                   <CheckBox name="isCustom">
@@ -126,7 +115,7 @@ export default function CreatePage() {
                           name="prompt"
                           className={clsx(
                             "flex-1 bg-transparent focus:outline-none",
-                            { "min-h-30": values.isCustom }
+                            { "min-h-30": values.isCustom },
                           )}
                           placeholder={
                             values.isCustom
@@ -146,21 +135,22 @@ export default function CreatePage() {
                                 .promise(
                                   api.micellenousApi
                                     .generateLyrics("Generate random lyrics")
-                                    .then((response) => {
-                                      setFieldValue(
-                                        "title",
-                                        response.data.title
-                                      );
-                                      setFieldValue(
-                                        "prompt",
-                                        response.data.text
-                                      );
+                                    .then(({ data }) => {
+                                      if (data.length > 0) {
+                                        const [lyric] = data;
+                                        setFieldValue("title", lyric.title);
+                                        setFieldValue("prompt", lyric.text);
+
+                                        return;
+                                      }
+
+                                      return Promise.reject();
                                     }),
                                   {
                                     pending: "Generating lyrics",
                                     success: "Lyrics generated successfully",
                                     error: "An unexpected error ocurr",
-                                  }
+                                  },
                                 )
                                 .finally(() => setLyricsLoading(false));
                             }}
@@ -195,7 +185,7 @@ export default function CreatePage() {
                                 if (!values.tags.includes(genre))
                                   setFieldValue(
                                     "tags",
-                                    values.tags.concat(genre)
+                                    values.tags.concat(genre),
                                   );
                               }}
                             >
@@ -205,7 +195,7 @@ export default function CreatePage() {
                         </div>
                       </ChipInput>
                     )}
-                    <CheckBox name="isInstrumental">
+                    <CheckBox name="instrumental">
                       <span>Instrumental</span>
                     </CheckBox>
                   </div>

@@ -50,15 +50,12 @@ export default function Player() {
           <div className="flex space-x-2 items-center px-4 py-2">
             <div className="flex-1 flex space-x-2 items-center">
               <img
-                src={currentPlaying.audioInfo.image_url}
+                src={currentPlaying.imageUrl}
                 className="w-12 h-12 rounded"
-                onClick={() => setLibrary(currentPlaying)}
               />
               <div className="flex flex-col">
-                <p>{currentPlaying.audioInfo.title}</p>
-                <p className="text-sm opacity-80">
-                  {currentPlaying.audioInfo.tags}
-                </p>
+                <p>{currentPlaying.title}</p>
+                <p className="text-sm opacity-80">{currentPlaying.tags}</p>
               </div>
             </div>
             <div className="flex space-x-2">

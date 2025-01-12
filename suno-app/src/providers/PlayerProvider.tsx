@@ -1,41 +1,44 @@
 import { createContext, useEffect, useMemo, useState } from "react";
 
-import { LibraryAndAudioInfo } from "../lib/api/models";
+import type { Audio } from "../lib/api/models";
 
 export type PlayerContextParams = {
-  destroy: () => void,
-  playAudio: (value: LibraryAndAudioInfo) => void;
+  destroy: () => void;
+  playAudio: (...value: Audio[]) => void;
   audio: HTMLAudioElement;
   previous: () => void;
   next: () => void;
   toggle: () => void;
   isPlaying: boolean;
-  queue: LibraryAndAudioInfo[];
-  currentPlaying: LibraryAndAudioInfo | null;
-  setQueue: React.Dispatch<React.SetStateAction<LibraryAndAudioInfo[]>>;
+  queue: Audio[];
+  currentPlaying: Audio | null;
+  setQueue: React.Dispatch<React.SetStateAction<Audio[]>>;
 };
 
 export const PlayerContext = createContext<Partial<PlayerContextParams>>({});
 
 export default function PlayerProvider({ children }: React.PropsWithChildren) {
   const [isPlaying, setIsPlaying] = useState(false);
-  const [queue, setQueue] = useState<LibraryAndAudioInfo[]>([]);
-  const [currentPlaying, setCurrentPlaying] =
-    useState<LibraryAndAudioInfo | null>(null);
+  const [queue, setQueue] = useState<Audio[]>([]);
+  const [currentPlaying, setCurrentPlaying] = useState<Audio | null>(null);
 
   const audio = useMemo(() => new Audio(), []);
 
-  const playAudio = function (libraryAndAudioInfo: LibraryAndAudioInfo) {
-    audio.src = libraryAndAudioInfo.audioInfo.audio_url;
-    audio.currentTime = 0;
-    audio.play();
+  const playAudio = function (...values: Audio[]) {
+    setQueue((queue) => [...queue, ...values]);
+    if (values.length > 0) {
+      const [value] = values;
+      audio.src = value.audioUrl;
+      audio.currentTime = 0;
+      audio.play();
 
-    setCurrentPlaying(libraryAndAudioInfo);
+      setCurrentPlaying(value);
+    }
   };
 
   const next = function () {
     const currentIndex = queue.findLastIndex(
-      (value) => currentPlaying!.library.id === value.library.id
+      (value) => currentPlaying?.id === value.id,
     );
 
     if (currentIndex === queue.length) return;
@@ -48,15 +51,15 @@ export default function PlayerProvider({ children }: React.PropsWithChildren) {
 
   const previous = function () {
     const currentIndex = queue.findLastIndex(
-      (value) => currentPlaying!.library.id === value.library.id
+      (value) => currentPlaying?.id === value.id,
     );
 
     if (currentIndex === 0) return;
 
     const nextIndex = currentIndex - 1;
-    const libraryAndAudioInfo = queue[nextIndex]!;
+    const audio = queue[nextIndex]!;
 
-    playAudio(libraryAndAudioInfo);
+    playAudio(audio);
   };
 
   const toggle = async function () {
@@ -66,11 +69,11 @@ export default function PlayerProvider({ children }: React.PropsWithChildren) {
     else audio.pause();
   };
 
-  const destroy = function(){
+  const destroy = function () {
     setCurrentPlaying(null);
     audio.pause();
     setQueue([]);
-  }
+  };
 
   useEffect(() => {
     audio.addEventListener("play", () => setIsPlaying(true));
