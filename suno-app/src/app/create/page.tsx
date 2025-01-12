@@ -59,9 +59,7 @@ export default function CreatePage() {
             onSubmit={async (values, { setSubmitting }) => {
               await toast.promise(
                 api.library
-                  .createAndWaitForLibrary(values, (data) => {
-                    setLibrary(data);
-                  })
+                  .createAndWaitForLibrary(values)
                   .then((data) => {
                     setLibrary(data);
                     dispatch(libraryActions.addMany([data]));

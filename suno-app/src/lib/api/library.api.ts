@@ -32,10 +32,7 @@ export default class LibraryApi extends BaseApi {
     return this.xior.delete<Library>(this.buildPath(id));
   }
 
-  async createAndWaitForLibrary(
-    data: CreateLibrary,
-    callback?: (audios: Library) => void,
-  ) {
+  async createAndWaitForLibrary(data: CreateLibrary) {
     const {
       data: { id },
     } = await this.createLibrary(data);
@@ -52,13 +49,11 @@ export default class LibraryApi extends BaseApi {
       if (attempt > 15) return data;
 
       switch (data.status) {
-        case "text":
-        case "first":
-          if (callback) callback(data);
-          return wrapper(id, duration + 5000, attempt + 1);
         case "idle":
           return wrapper(id, duration + 5000, attempt + 1);
         case "complete":
+        case "text":
+        case "first":
           return data;
       }
 
