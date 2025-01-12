@@ -32,4 +32,3 @@ databases:
   - name: museai
     databaseName: museai
     user: admin
-    plan: starter
