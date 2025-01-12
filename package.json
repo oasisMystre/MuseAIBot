@@ -22,6 +22,7 @@
     "@types/user-agents": "^1.0.4",
     "axios": "^1.6.8",
     "axios-cookiejar-support": "^5.0.1",
+    "axios-logger": "^2.8.1",
     "dotenv": "^16.4.5",
     "drizzle-orm": "^0.31.2",
     "drizzle-zod": "^0.5.1",

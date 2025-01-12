@@ -64,8 +64,8 @@ export const libraries = pgTable("libraries", {
   createdAt: timestamp("created_at").defaultNow(),
   plays: integer("plays").default(0).notNull(),
   likes: integer("likes").array().notNull(),
-  status: text("status", { enum: ["text", "first", "complete"] })
-    .default("text")
+  status: text("status", { enum: ["idle","text", "first", "complete"] })
+    .default("idle")
     .notNull(),
   data: json("data")
     .default([])

@@ -12,11 +12,7 @@ export const getOrCreateUser = async function (
     .values(values)
     .onConflictDoUpdate({
       target: users.id,
-      set: {
-        firstName: values.firstName,
-        lastName: values.lastName,
-        username: values.username,
-      },
+      set: values
     })
     .returning();
 };

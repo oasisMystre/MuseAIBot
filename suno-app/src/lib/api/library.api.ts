@@ -9,9 +9,7 @@ export default class LibraryApi extends BaseApi {
   path: string = "libraries";
 
   getLibraries() {
-    return this.xior.get<Paginate<Library>>(
-      this.buildPath(this.path, "explore"),
-    );
+    return this.xior.get<Paginate<Library>>(this.buildPath("explore"));
   }
 
   getUserLibraries() {
@@ -19,7 +17,7 @@ export default class LibraryApi extends BaseApi {
   }
 
   getLibrary(id: Library["id"]) {
-    return this.xior.get<Library>(this.buildPath(this.buildPath, id));
+    return this.xior.get<Library>(this.buildPath(id));
   }
 
   createLibrary(data: CreateLibrary) {
@@ -27,11 +25,11 @@ export default class LibraryApi extends BaseApi {
   }
 
   updateLibrary(id: number, data: Partial<Omit<Library, "id">>) {
-    return this.xior.patch<Library>(this.buildPath(this.buildPath, id), data);
+    return this.xior.patch<Library>(this.buildPath(id), data);
   }
 
   deleteLibrary(id: number) {
-    return this.xior.delete<Library>(this.buildPath(this.buildPath, id));
+    return this.xior.delete<Library>(this.buildPath(id));
   }
 
   async createAndWaitForLibrary(
@@ -42,16 +40,24 @@ export default class LibraryApi extends BaseApi {
       data: { id },
     } = await this.createLibrary(data);
 
-    const wrapper = async (id: string, duration: number): Promise<Library> => {
-      sleep(duration);
+    const wrapper = async (
+      id: string,
+      duration: number,
+      attempt: number,
+    ): Promise<Library> => {
+      await sleep(duration);
 
       const { data } = await this.getLibrary(id);
+
+      if (attempt > 15) return data;
+
       switch (data.status) {
         case "text":
-          return wrapper(id, duration + 5000);
         case "first":
           if (callback) callback(data);
-          return wrapper(id, duration + 5000);
+          return wrapper(id, duration + 5000, attempt + 1);
+        case "idle":
+          return wrapper(id, duration + 5000, attempt + 1);
         case "complete":
           return data;
       }
@@ -59,6 +65,6 @@ export default class LibraryApi extends BaseApi {
       return data;
     };
 
-    return wrapper(id, 0);
+    return wrapper(id, 0, 0);
   }
 }

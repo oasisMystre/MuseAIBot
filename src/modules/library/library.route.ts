@@ -2,18 +2,23 @@ import type { FastifyInstance, FastifyReply, FastifyRequest } from "fastify";
 
 import { Suno } from "../../lib";
 import { paginateSchema } from "../dto/paginate.dto";
-import { getLibrariesSchema, insertLibrariesSchema } from "../../schema";
+import {
+  getLibrariesSchema,
+  insertLibrariesSchema,
+  selectLibrariesSchema,
+} from "../../schema";
 
 import {
   createLibrary,
   deleteLibraryOnlyByUser,
   getLibraries,
   getLibrariesOnlyByUser,
+  getLibraryById,
   updateLibraryById,
 } from "./library.controller";
 import { createDto } from "./dto/create.dto";
 
-const getLibrariesOnlyByUserRoute = async function (
+const getLibrariesByUserRoute = async function (
   req: FastifyRequest<{ Querystring: Zod.infer<typeof paginateSchema> }>,
 ) {
   const { offset, limit } = await paginateSchema.parseAsync(req.query);
@@ -47,29 +52,49 @@ export const getLibrariesRoute = async function (
   };
 };
 
-const createLibraryOnlyByUserRoute = async function (
+export const getLibraryRoute = async function (
+  req: FastifyRequest<{
+    Params: Pick<Zod.infer<typeof selectLibrariesSchema>, "id">;
+  }>,
+) {
+  return selectLibrariesSchema
+    .pick({ id: true })
+    .parseAsync(req.params)
+    .then(async (params) => {
+      const library = await getLibraryById(params.id);
+      return library;
+    });
+};
+
+const createLibraryRoute = async function (
   req: FastifyRequest<{ Body: Zod.infer<typeof createDto> }>,
-  reply: FastifyReply,
 ) {
   const body = req.body;
 
   return createDto.parseAsync(body).then(async (values) => {
-    const { isCustom, instrumental, title, prompt, tags } = values;
+    const { customMode, instrumental, title, prompt, tags } = values;
+    const callBackUrl =
+      process.env.RENDER_EXTERNAL_URL + "/micellenous/webhook/suno/";
 
     const {
       data: {
         data: { taskId },
       },
-    } = isCustom
+    } = customMode
       ? await Suno.instance.generate.generate({
           prompt,
           title,
+          customMode,
           instrumental,
+          callBackUrl,
           style: tags?.join(""),
-          callBackUrl:
-            process.env.RENDER_EXTERNAL_URL + "/micellenous/webhook/suno/",
         })
-      : await Suno.instance.generate.generate({ prompt, instrumental });
+      : await Suno.instance.generate.generate({
+          prompt,
+          customMode,
+          instrumental,
+          callBackUrl,
+        });
 
     const [library] = await createLibrary({
       title,
@@ -82,7 +107,7 @@ const createLibraryOnlyByUserRoute = async function (
   });
 };
 
-const updateLibraryOnlyByUserRoute = async function (
+const updateLibraryRoute = async function (
   req: FastifyRequest<{
     Params: Zod.infer<typeof getLibrariesSchema>;
     Body: Partial<Zod.infer<typeof insertLibrariesSchema>>;
@@ -103,7 +128,7 @@ const updateLibraryOnlyByUserRoute = async function (
     );
 };
 
-const deleteLibrariesOnlyByUserRoute = async function (
+const deleteLibraryRoute = async function (
   req: FastifyRequest<{ Params: Zod.infer<typeof getLibrariesSchema> }>,
 ) {
   const params = req.params;
@@ -128,27 +153,34 @@ export const libraryRoutes = function (fastify: FastifyInstance) {
     method: "GET",
     url: "/libraries/",
     preHandler: fastify.authenticate,
-    handler: getLibrariesOnlyByUserRoute,
+    handler: getLibrariesByUserRoute,
+  });
+
+  fastify.route({
+    method: "GET",
+    url: "/libraries/:id/",
+    preHandler: fastify.authenticate,
+    handler: getLibraryRoute,
   });
 
   fastify.route({
     method: "POST",
     url: "/libraries/",
     preHandler: fastify.authenticate,
-    handler: createLibraryOnlyByUserRoute,
+    handler: createLibraryRoute,
   });
 
   fastify.route({
     method: "PATCH",
     url: "/libraries/:id/",
     preHandler: fastify.authenticate,
-    handler: updateLibraryOnlyByUserRoute,
+    handler: updateLibraryRoute,
   });
 
   fastify.route({
     method: "DELETE",
     url: "/libraries/:id/",
     preHandler: fastify.authenticate,
-    handler: deleteLibrariesOnlyByUserRoute,
+    handler: deleteLibraryRoute,
   });
 };

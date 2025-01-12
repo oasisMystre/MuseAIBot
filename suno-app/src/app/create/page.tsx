@@ -29,8 +29,8 @@ export default function CreatePage() {
   const [lyricsLoading, setLyricsLoading] = useState(false);
 
   const validateYupSchema = object().shape({
-    isCustom: boolean(),
-    isInstrumental: boolean(),
+    customMode: boolean(),
+    instrumental: boolean(),
     prompt: string().trim().min(6).required(),
     title: string()
       .trim()
@@ -52,7 +52,7 @@ export default function CreatePage() {
             initialValues={{
               prompt: "",
               title: "",
-              isCustom: false,
+              customMode: false,
               instrumental: false,
               tags: [] as string[],
             }}
@@ -83,13 +83,13 @@ export default function CreatePage() {
               <>
                 <header className="flex items-center">
                   <h1 className="flex-1 text-xl font-bold">Create</h1>
-                  <CheckBox name="isCustom">
+                  <CheckBox name="customMode">
                     <span>Custom Prompt</span>
                   </CheckBox>
                 </header>
                 <Form className="flex flex-col space-y-8">
                   <div className="flex-1 flex flex-col space-y-4">
-                    {values.isCustom && (
+                    {values.customMode && (
                       <div className="flex flex-col space-y-2">
                         <label className="flex items-center space-x-2">
                           <span>Title</span>
@@ -107,7 +107,7 @@ export default function CreatePage() {
                     )}
                     <div className="flex flex-col space-y-2">
                       <label className="text-sm">
-                        {values.isCustom ? "Lyrics" : "Song Description"}
+                        {values.customMode ? "Lyrics" : "Song Description"}
                       </label>
                       <div className="flex flex-col input-border focus-within:input-focus">
                         <Field
@@ -115,15 +115,15 @@ export default function CreatePage() {
                           name="prompt"
                           className={clsx(
                             "flex-1 bg-transparent focus:outline-none",
-                            { "min-h-30": values.isCustom },
+                            { "min-h-30": values.customMode },
                           )}
                           placeholder={
-                            values.isCustom
+                            values.customMode
                               ? "Enter your own lyrics..."
                               : "Song Description"
                           }
                         />
-                        {values.isCustom && (
+                        {values.customMode && (
                           <button
                             type="button"
                             className="min-w-48 h-10 self-start flex space-x-2 justify-center items-center !bg-stone-700 px-2 py-1 rounded-md cursor-pointer"
@@ -170,15 +170,16 @@ export default function CreatePage() {
                         <ErrorMessage name="prompt" />
                       </small>
                     </div>
-                    {values.isCustom && (
+                    {values.customMode && (
                       <ChipInput
                         name="tags"
                         label="Song Genre"
                         placeholder="Enter music genre"
                       >
                         <div className="flex space-x-2 items-center flex-nowrap overflow-x-scroll">
-                          {_genres.map((genre) => (
+                          {_genres.map((genre, index) => (
                             <button
+                              key={index}
                               type="button"
                               className="shrink-0 border border-white/50 rounded px-2 py-1 text-sm text-white/80"
                               onClick={() => {

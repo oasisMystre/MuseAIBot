@@ -10,6 +10,7 @@ import type { TelegramContext } from "./context";
 import { getOrCreateUser } from "./modules/user/user.controller";
 import { tokenAuthMiddleware } from "./middlewares/auth.middleware";
 import { HOST, PORT, TELEGRAM_ACCESS_TOKEN } from "./config";
+import { server } from "typescript";
 
 type MainParams = {
   accessToken: string;
@@ -63,8 +64,15 @@ export async function main({ host, port, accessToken }: MainParams) {
   registerBot(bot);
   registerRoutes(app);
 
-  process.once("SIGINT", () => bot.stop("SIGINT"));
-  process.once("SIGTERM", () => bot.stop("SIGTERM"));
+  process.once("SIGINT", async () =>{
+    bot.stop("SIGINT");
+    await app.close();
+    
+  });
+  process.once("SIGTERM", async () => {
+    bot.stop("SIGTERM");
+    await app.close();
+  });
 
   longRunProcess.push(
     app

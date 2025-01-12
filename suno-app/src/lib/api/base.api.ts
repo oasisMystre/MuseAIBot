@@ -8,7 +8,7 @@ export abstract class BaseApi extends XiorInjection {
   abstract path: string;
 
   buildPath(...path: any[]) {
-    return path.join("/");
+    return this.path+ "/" + path.join("/");
   }
 
   buildQueryString(query: Record<string, string>) {

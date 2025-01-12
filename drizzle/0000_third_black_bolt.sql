@@ -5,7 +5,7 @@ CREATE TABLE IF NOT EXISTS "libraries" (
 	"created_at" timestamp DEFAULT now(),
 	"plays" integer DEFAULT 0 NOT NULL,
 	"likes" integer[] NOT NULL,
-	"status" text DEFAULT 'text' NOT NULL,
+	"status" text DEFAULT 'idle' NOT NULL,
 	"data" json DEFAULT '[]'::json NOT NULL,
 	"user_id" text NOT NULL
 );

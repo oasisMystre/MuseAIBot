@@ -5,6 +5,6 @@ export class MicellenousApi extends BaseApi {
   path = "micellenous";
 
   generateLyrics(prompt: string) {
-    return this.xior.post<Lyrics[]>(this.buildPath(this.path, "lyrics"), { prompt });
+    return this.xior.post<Lyrics[]>(this.buildPath("lyrics"), { prompt });
   }
 }

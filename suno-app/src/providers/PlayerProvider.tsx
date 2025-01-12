@@ -28,7 +28,11 @@ export default function PlayerProvider({ children }: React.PropsWithChildren) {
     setQueue((queue) => [...queue, ...values]);
     if (values.length > 0) {
       const [value] = values;
-      audio.src = value.audioUrl;
+      audio.src =
+        value.audioUrl ||
+        value.sourceAudioUrl ||
+        value.sourceStreamAudioUrl ||
+        value.streamAudioUrl;
       audio.currentTime = 0;
       audio.play();
 

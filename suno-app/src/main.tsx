@@ -38,5 +38,5 @@ root.render(
     <TelegramProvider>
       <RouterProvider router={router} />
     </TelegramProvider>
-  </React.StrictMode>
+  </React.StrictMode>,
 );

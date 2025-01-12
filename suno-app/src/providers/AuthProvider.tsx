@@ -4,10 +4,10 @@ import { createContext, useEffect, useState } from "react";
 import { Api } from "../lib/api";
 import type { ApiUser, User } from "../lib/api/models";
 
-import ApiProvider from "./ApiProvider";
-import Protected from "../components/Protected";
 import { LoadingState } from "../store/types";
-import { arrayToRecord } from "../lib/utils/object";
+import Protected from "../components/Protected";
+
+import ApiProvider from "./ApiProvider";
 
 export type AuthContext = ApiUser & {
   setUser: React.Dispatch<React.SetStateAction<ApiUser["user"]>>;
@@ -25,7 +25,7 @@ export default function AuthProvider({ children }: React.PropsWithChildren) {
   const [apiUser, setApiUser] = useState<ApiUser | null>(null);
   const [loadingState, setLoadingState] =
     useState<LoadingState["loadingState"]>("idle");
-  const user = arrayToRecord<User>(Array.from(searchParams.entries()));
+  const user = Object.fromEntries(searchParams.entries()) as unknown as User;
   user.id = Number(user.id);
 
   useEffect(() => {
@@ -37,7 +37,10 @@ export default function AuthProvider({ children }: React.PropsWithChildren) {
         setLoadingState("success");
         setApiUser(data);
       })
-      .catch(() => setLoadingState("failed"));
+      .catch((error) => {
+        console.error(error);
+        setLoadingState("failed");
+      });
   }, []);
 
   return loadingState === "success" ? (

@@ -14,12 +14,14 @@ export const sunoCallbackRoute = async (
   reply: FastifyReply,
 ) => {
   const body = request.body;
-  console.log(body);
 
   const library = await getLibraryById(body.data.task_id);
   if (library) {
     const data = objectToCamel(body.data.data);
-    return updateLibraryById(library.id, { data });
+    return updateLibraryById(library.id, {
+      data,
+      status: body.data.callbackType,
+    });
   }
   return reply.status(404).send({ message: "Library with task not found" });
 };

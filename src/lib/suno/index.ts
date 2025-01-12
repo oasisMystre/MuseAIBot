@@ -1,4 +1,6 @@
 import axios, { AxiosInstance } from "axios";
+import * as AxiosLogger from "axios-logger";
+
 import { GenerateApi } from "./generate.api";
 
 export class Suno {
@@ -12,11 +14,11 @@ export class Suno {
         Authorization: "Bearer " + apiKey,
       },
     });
-    
-    this.axios.interceptors.request.use((request) => {
-      console.log(request.url);
-      return request;
-    })
+
+    this.axios.interceptors.response.use(
+      AxiosLogger.responseLogger,
+      AxiosLogger.errorLogger,
+    );
 
     this.generate = new GenerateApi(this.axios);
   }

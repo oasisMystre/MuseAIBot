@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import {
   MdClose,
   MdPause,
@@ -8,13 +8,23 @@ import {
 } from "react-icons/md";
 
 import usePlayer from "../composables/usePlayer";
+import useLibraries from "../composables/useLibraries";
 import useMusicDialog from "../composables/useMusicDialog";
 
 export default function Player() {
   const { setLibrary } = useMusicDialog();
+  const { libraries } = useLibraries();
   const { audio, destroy, currentPlaying, next, previous, toggle, isPlaying } =
     usePlayer();
   const [seekPercentage, setSeekPercentage] = useState(0);
+
+  const library = useMemo(() => {
+    return (
+      libraries.find((library) =>
+        library.data.some((data) => data.id === currentPlaying?.id),
+      ) ?? null
+    );
+  }, [libraries, currentPlaying]);
 
   const onPlaying = function () {
     const currentTime = audio.currentTime;
@@ -48,7 +58,10 @@ export default function Player() {
             />
           </div>
           <div className="flex space-x-2 items-center px-4 py-2">
-            <div className="flex-1 flex space-x-2 items-center">
+            <div
+              className="flex-1 flex space-x-2 items-center"
+              onClick={() => setLibrary(library)}
+            >
               <img
                 src={currentPlaying.imageUrl}
                 className="w-12 h-12 rounded"

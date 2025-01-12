@@ -5,7 +5,7 @@ export type Library = {
   likes: number;
   plays: number;
   data: Audio[];
-  status: "text" | "first" | "complete";
+  status: "text" | "first" | "complete" | "idle";
 };
 
 export type Audio = {

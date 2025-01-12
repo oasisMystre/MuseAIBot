@@ -1,5 +1,5 @@
 {
-  "id": "57c753e5-7b78-4089-8f01-e6c5a9df9679",
+  "id": "e448fcb4-46af-443a-887b-2a12de51c86f",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -52,7 +52,7 @@
           "type": "text",
           "primaryKey": false,
           "notNull": true,
-          "default": "'text'"
+          "default": "'idle'"
         },
         "data": {
           "name": "data",

@@ -7,7 +7,7 @@ export default function Search() {
   const [, setSearchParams] = useSearchParams();
 
   return (
-    <div className="flex items-center bg-black/50 px-2 rounded-md focus-within:ring-3 ring-green-300">
+    <div className="flex items-center bg-dark-700 px-2 rounded-md focus-within:ring-3 border-white ring-white/75">
       <MdSearch />
       <input
         className="flex-1 bg-transparent p-2 !outline-none"
