@@ -1,9 +1,9 @@
 import { Markup, type Telegraf } from "telegraf";
 import type { TelegramContext } from "../context";
 
+import { APP_URL } from "../config";
 import { readFileSync } from "../utils/text";
 import { buildPathWithQuery } from "../utils/url";
-import { APP_URL } from "../config";
 
 const echo = async function (ctx: TelegramContext) {
   const user = ctx.from ?? ctx.myChatMember?.from;
@@ -26,7 +26,7 @@ const echo = async function (ctx: TelegramContext) {
   await ctx.reply(
     "Invalid telegram user",
     Markup.inlineKeyboard([
-      Markup.button.url("Contact Support", "https://t.me/MuseAICrypto"),
+      Markup.button.url("Contact Support", "https://t.me/spotifAICrypto"),
     ])
   );
 };
@@ -51,7 +51,7 @@ export default function registerBot(bot: Telegraf<TelegramContext>) {
     },
     {
       command: "help",
-      description: "Show MuseAI help",
+      description: "Show SpotifAI help",
     },
     {
       command: "socials",

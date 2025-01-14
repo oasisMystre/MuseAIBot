@@ -1,34 +1,34 @@
 services:
   - type: web
-    name: museaibot
+    name: spotifaibot
     runtime: node
     plan: starter
     autoDeploy: true
     buildCommand: bun install --frozen-lockfile && bun run build && bun run migrate
     startCommand: bun serve
     envVars:
-      - fromGroup: museaibot
+      - fromGroup: spotifaibot
       - key: DATABASE_URL
         fromDatabase:
-          name: museai
+          name: spotifai
           property: connectionString
       - key: APP_URL
-        value: https://bot.museai.grambot.fun
+        value: https://bot.spotifai.grambot.fun
     domains:
-      - "v1.api.museai.grambot.fun"
+      - "v1.api.spotifai.grambot.fun"
   - type: web
-    name: museai
+    name: spotifai
     runtime: static
     autoDeploy: true
     buildCommand: cd suno-app && bun install --frozen-lockfile && bun run build
     staticPublishPath: suno-app/dist
     envVars:
-      - fromGroup: museai
+      - fromGroup: spotifai
       - key: VITE_APP_API_BASE_URL
-        value: https://v1.api.museai.grambot.fun
+        value: https://v1.api.spotifai.grambot.fun
     domains:
-      - bot.museai.grambot.fun
+      - bot.spotifai.grambot.fun
 databases:
-  - name: museai
-    databaseName: museai
+  - name: spotifai
+    databaseName: spotifai
     user: admin

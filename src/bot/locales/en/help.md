@@ -1,6 +1,6 @@
-*MuseAI* 
+*SpotifAI* 
 
-MuseAI is a generative AI bot that helps you create music and instrumentals. 
+SpotifAI is a generative AI bot that helps you create music and instrumentals. 
 
 *How to use?*
 

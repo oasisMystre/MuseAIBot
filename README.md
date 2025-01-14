@@ -1,1 +1,1 @@
-# MuseAI
+# spotifAI

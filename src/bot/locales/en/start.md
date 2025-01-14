@@ -1,3 +1,3 @@
 *Let's get started* 
 
-Please tap the button below to launch MuseAI
+Please tap the button below to launch SpotifAI
