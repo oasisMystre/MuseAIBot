@@ -22,6 +22,10 @@ services:
     autoDeploy: true
     buildCommand: cd suno-app && bun install --frozen-lockfile && bun run build
     staticPublishPath: suno-app/dist
+    buildFilter:
+      paths:
+        - suno-app/**/*.ts
+        - suno/*.json
     envVars:
       - fromGroup: spotifai
       - key: VITE_APP_API_BASE_URL
