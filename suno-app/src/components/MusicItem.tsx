@@ -25,7 +25,7 @@ export default function MusicItem({ libraries, item }: MusicItemProps) {
         />
         <MusicItemMenu item={data} />
         <button
-          className="absolute bottom-2 right-2 bg-white p-2 rounded-full"
+          className="absolute bottom-2 right-2 bg-lime p-2 rounded-full"
           onClick={() => {
             setQueue(libraries.flatMap((library) => library.data));
             playAudio(...item.data);

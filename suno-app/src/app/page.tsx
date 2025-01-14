@@ -31,7 +31,7 @@ export default function LibraryPage() {
         <h1 className="text-2xl font-bold">Library</h1>
         {libraries.length > 0 && <Search />}
         <div>
-          <button className="flex items-center space-x-2 border-b-2 p-2">
+          <button className="flex items-center space-x-2 border-b-2 border-b-lime text-lime p-2">
             <span className="flex-1">Songs</span>
           </button>
         </div>

@@ -13,7 +13,7 @@ export default defineConfig({
   },
   shortcuts: {
     "input-focus":
-      "ring-3 ring-white ring-offset-1 border-white",
+      "ring-3 ring-lime ring-offset-1 border-lime",
     "input-border":
       "border border-1 border-stone-700 p-2 bg-transparent rounded-md focus:outline-none focus:outline-none",
   },

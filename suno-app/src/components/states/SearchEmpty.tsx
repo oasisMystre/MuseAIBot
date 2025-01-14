@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 export default function SearchEmpty() {
   return (
     <div className="flex-1 flex flex-col space-y-2 items-center justify-center">
-      <button className="bg-green-500 p-3 rounded-full">
+      <button className="bg-lime-500 p-3 rounded-full">
         <MdSearch className="text-2xl" />
       </button>
       <div className="text-center">

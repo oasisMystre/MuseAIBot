@@ -62,7 +62,7 @@ export default function LayoutHeader({ className }: { className?: string }) {
         {!location.pathname.includes("create") && (
           <Link
             to="/create"
-            className="flex space-x-2 items-center ml-auto bg-white text-black px-4 py-2 rounded-md"
+            className="flex space-x-2 items-center ml-auto bg-lime text-black px-4 py-2 rounded-md"
           >
             <MdAdd className="text-xl" />
             <span>Create</span>
