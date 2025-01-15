@@ -12,9 +12,13 @@ type MusicItemMenuProps = {
 
 export default function MusicItemMenu({ item }: MusicItemMenuProps) {
   const onShare = async () => {
-    if (!("navigator" in window) || !navigator.share) return Promise.reject();
-
-    const file = await urlToFile(item.audioUrl, item.title);
+    const file = await urlToFile(
+      item.audioUrl ??
+        item.sourceAudioUrl ??
+        item.streamAudioUrl ??
+        item.sourceStreamAudioUrl,
+      item.title,
+    );
     const shareData = {
       files: [file],
     } satisfies ShareData;

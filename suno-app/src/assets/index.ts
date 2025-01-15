@@ -1,1 +1,0 @@
-export * as IcLogo from "./ic_logo.png";

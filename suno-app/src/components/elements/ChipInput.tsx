@@ -24,8 +24,9 @@ export default function ChipInput({
         <div className="flex space-x-2 flex-wrap items-center input-border focus:input-focus !p-0">
           {values[name] && (
             <div className="flex items-center space-x-2  space-y-2 p-2 flex-wrap">
-              {values[name].map((value) => (
+              {values[name].map((value, index) => (
                 <button
+                  key={index}
                   type="button"
                   className="flex items-center space-x-2 border border-white/50 rounded px-2 py-1"
                 >

@@ -70,8 +70,8 @@ export default function MusicDetailDialog({
         <div className="flex-1 flex flex-col space-y-4 px-8  opacity-80">
           <p className="font-medium">Lyrics</p>
           <div className="flex flex-col space-y-6 whitespace-pre-line prose">
-            {audio.prompt.split(/(?=\[.*\])/i).map((lyric) => (
-              <div>{lyric}</div>
+            {audio.prompt.split(/(?=\[.*\])/i).map((lyric, index) => (
+              <div key={index}>{lyric}</div>
             ))}
           </div>
         </div>

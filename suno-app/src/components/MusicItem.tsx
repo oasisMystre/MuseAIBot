@@ -15,8 +15,8 @@ export default function MusicItem({ libraries, item }: MusicItemProps) {
   const { setLibrary } = useMusicDialog();
   const { setQueue, playAudio } = usePlayer();
 
-  return item.data.map((data) => (
-    <div className="h-40 flex flex-col cursor-pointer transition-all active:scale-98">
+  return item.data.map((data, index) => (
+    <div key={index} className="h-40 flex flex-col cursor-pointer transition-all active:scale-98">
       <div className="relative">
         <img
           src={data.imageUrl}
