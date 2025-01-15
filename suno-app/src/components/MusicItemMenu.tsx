@@ -1,6 +1,6 @@
+import "share-api-polyfill";
 import { Menu } from "@headlessui/react";
 
-import { toast } from "react-toastify";
 import { MdMoreVert, MdShare, MdDelete } from "react-icons/md";
 
 import { urlToFile } from "../lib/utils/file";
@@ -12,15 +12,16 @@ type MusicItemMenuProps = {
 
 export default function MusicItemMenu({ item }: MusicItemMenuProps) {
   const onShare = async () => {
-    const file = await urlToFile(
+    const url =
       item.audioUrl ??
-        item.sourceAudioUrl ??
-        item.streamAudioUrl ??
-        item.sourceStreamAudioUrl,
-      item.title,
-    );
+      item.sourceAudioUrl ??
+      item.streamAudioUrl ??
+      item.sourceStreamAudioUrl;
+    const file = await urlToFile(url, item.title);
     const shareData = {
+      url,
       files: [file],
+      text: item.title,
     } satisfies ShareData;
 
     await navigator.share(shareData);
@@ -37,13 +38,7 @@ export default function MusicItemMenu({ item }: MusicItemMenuProps) {
         <Menu.Item
           as="div"
           className="flex items-center space-x-2 px-2 py-4 cursor-pointer"
-          onClick={async () => {
-            await toast.promise(onShare(), {
-              pending: "Please wait a moment",
-              success: "Music shared successfully",
-              error: "Failed to share file",
-            });
-          }}
+          onClick={onShare}
         >
           <MdShare className="text-xl" />
           <span className="text-sm">Share</span>
