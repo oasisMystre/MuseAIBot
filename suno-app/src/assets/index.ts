@@ -1,1 +1,1 @@
-export * as IcLogo from "./ic_logo.png";
+export * as IcLogo from "./ic_logo.PNG";
