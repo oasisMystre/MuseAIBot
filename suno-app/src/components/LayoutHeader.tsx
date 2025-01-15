@@ -5,7 +5,6 @@ import { Link } from "react-router-dom";
 import { MdAdd, MdClose, MdMenu } from "react-icons/md";
 
 import { layoutNavigations } from "../config/navigations";
-import { IcLogo } from "../assets";
 
 export default function LayoutHeader({ className }: { className?: string }) {
   const location = useLocation();
