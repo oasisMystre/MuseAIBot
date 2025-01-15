@@ -33,7 +33,6 @@ export default function MusicItemMenu({ item }: MusicItemMenuProps) {
           <MdMoreVert className="text-lg" />
         </button>
       </Menu.Button>
-
       <Menu.Items className="absolute top-10 w-36 flex flex-col divide-y divide-stone-700 bg-stone-900 z-20 rounded-md">
         <Menu.Item
           as="div"
