@@ -6,6 +6,10 @@ services:
     autoDeploy: true
     buildCommand: bun install --frozen-lockfile && bun run build && bun run migrate
     startCommand: bun serve
+    buildFilter:
+      ignoredPaths:
+        - suno-app/**/*.ts
+        - suno/*.json
     envVars:
       - fromGroup: spotifaibot
       - key: DATABASE_URL
