@@ -4,6 +4,7 @@ import { useLocation } from "react-router";
 import { Link } from "react-router-dom";
 import { MdAdd, MdClose, MdMenu } from "react-icons/md";
 
+import { IcLogo } from "../assets";
 import { layoutNavigations } from "../config/navigations";
 
 export default function LayoutHeader({ className }: { className?: string }) {
@@ -17,7 +18,7 @@ export default function LayoutHeader({ className }: { className?: string }) {
         className="text-2xl font-extrabold"
       >
         <img
-          src="https://6mp9oo4asc.ufs.sh/f/v5QzicCvx9G1UTE4sNZYl87OK2xdRALap9ViuNBe5U4sckMS"
+          src={IcLogo.default}
           width={72}
           height={72}
         />

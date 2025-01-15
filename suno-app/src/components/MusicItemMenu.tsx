@@ -1,4 +1,4 @@
-import "share-api-polyfill";
+import "../composables/share";
 import { Menu } from "@headlessui/react";
 
 import { MdMoreVert, MdShare, MdDelete } from "react-icons/md";
@@ -24,7 +24,13 @@ export default function MusicItemMenu({ item }: MusicItemMenuProps) {
       text: item.title,
     } satisfies ShareData;
 
-    await navigator.share(shareData);
+    await navigator.share(shareData, {
+      telegram: true,
+      whatsapp: true,
+      twitter: true,
+      email: true,
+      copy: true,
+    });
   };
 
   return (
